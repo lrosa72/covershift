@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Idea Pool - Pipa's IdleForge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-low": "#1a1c1f",
+              "primary-fixed-dim": "#ffb77d",
+              "surface-container-high": "#282a2d",
+              "on-tertiary-fixed": "#00201e",
+              "on-primary": "#4d2600",
+              "outline": "#a48c7a",
+              "on-secondary-container": "#a9bad0",
+              "surface-bright": "#37393d",
+              "inverse-primary": "#904d00",
+              "on-primary-fixed-variant": "#6e3900",
+              "on-secondary-fixed": "#0b1d2d",
+              "on-secondary-fixed-variant": "#38485a",
+              "surface-container-lowest": "#0c0e11",
+              "surface-container": "#1e2023",
+              "primary-container": "#ff8c00",
+              "outline-variant": "#564334",
+              "primary": "#ffb77d",
+              "on-error-container": "#ffdad6",
+              "secondary-fixed-dim": "#b7c8de",
+              "primary-fixed": "#ffdcc3",
+              "tertiary": "#5dd9d0",
+              "secondary-container": "#3a4b5d",
+              "inverse-on-surface": "#2f3034",
+              "tertiary-fixed": "#7cf6ec",
+              "tertiary-fixed-dim": "#5dd9d0",
+              "surface-container-highest": "#333538",
+              "on-secondary": "#213243",
+              "on-primary-container": "#623200",
+              "on-surface-variant": "#ddc1ae",
+              "background": "#111316",
+              "tertiary-container": "#38bcb3",
+              "on-tertiary-container": "#004743",
+              "error": "#ffb4ab",
+              "on-tertiary-fixed-variant": "#00504c",
+              "on-tertiary": "#003734",
+              "on-primary-fixed": "#2f1500",
+              "error-container": "#93000a",
+              "on-error": "#690005",
+              "surface-dim": "#111316",
+              "surface-tint": "#ffb77d",
+              "surface": "#111316",
+              "secondary": "#b7c8de",
+              "inverse-surface": "#e2e2e6",
+              "on-background": "#e2e2e6",
+              "surface-variant": "#333538",
+              "on-surface": "#e2e2e6",
+              "secondary-fixed": "#d2e4fb"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(12, 14, 17, 0.85);
+            backdrop-filter: blur(24px);
+        }
+        .asymmetric-border {
+            clip-path: polygon(0 0, 100% 0, 100% 95%, 98% 100%, 0 100%);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface min-h-screen selection:bg-primary/30">
+<!-- Background Factory Floor Representation -->
+<div class="fixed inset-0 z-0">
+<img alt="Industrial factory floor with glowing machinery" class="w-full h-full object-cover opacity-30 grayscale" data-alt="Cinematic dark industrial factory floor background with orange embers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWQQ-OumpNxGNU7gD7kAmUBL_M0OBjkOgBCpv932o1vJY1RQKND_3G2Mqy-rRHAFg31h7CeNHahZ4-7kMby9LSd9DrAcIbv-bv-iCpRFlkIxbV8RFzVuStpFpaQ3B0pIqtG6FG9qEqvbwRrJ0t9-HeHDxrmTVXzjTn3OHks15Nj_MP4_5_QVzdbSKjYXicN_6bEp_ThE0HSG_7DuY8E_CHi5hL7BB0kRJFvsggbSJ0tW7g504xMmWhpYpuaAsqOcdC_gjnTOVNiqM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50"></div>
+</div>
+<!-- SideNavBar (JSON Component) -->
+<nav class="fixed left-0 top-0 h-full flex flex-col pt-20 bg-slate-900/60 backdrop-blur-xl h-screen w-64 border-r border-slate-800/50 shadow-[4px_0_24px_rgba(0,0,0,0.5)] z-40 hidden md:flex">
+<div class="px-6 mb-8">
+<h1 class="text-lg font-bold text-orange-500 font-headline uppercase tracking-tighter">Pipa's Forge</h1>
+<p class="text-[10px] font-headline uppercase tracking-widest text-slate-500">Master Architect</p>
+</div>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-4 px-6 py-3 bg-orange-500/20 text-orange-400 border-r-4 border-orange-500 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="font-headline uppercase tracking-widest text-[10px]">Idea Pool</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 transition-all translate-x-0 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="hammer">humerus</span>
+<span class="font-headline uppercase tracking-widest text-[10px]">Active Forging</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 transition-all translate-x-0 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-headline uppercase tracking-widest text-[10px]">Entropy Monitor</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 transition-all translate-x-0 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-headline uppercase tracking-widest text-[10px]">System Logs</span>
+</a>
+</div>
+<div class="mt-auto px-6 py-8 flex flex-col gap-4">
+<button class="w-full bg-primary text-on-primary py-3 font-headline font-bold text-xs uppercase tracking-widest rounded-lg shadow-lg shadow-primary/20">New Idea</button>
+<div class="pt-4 border-t border-slate-800/50 flex flex-col gap-2">
+<a class="flex items-center gap-2 text-slate-500 text-[10px] font-headline uppercase tracking-widest hover:text-slate-300 transition-all" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help">help</span> Support
+                </a>
+<a class="flex items-center gap-2 text-slate-500 text-[10px] font-headline uppercase tracking-widest hover:text-slate-300 transition-all" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="logout">logout</span> Sign Out
+                </a>
+</div>
+</div>
+</nav>
+<!-- Main Overlay Container -->
+<main class="relative z-50 flex items-center justify-center min-h-screen p-4 md:pl-72">
+<div class="glass-panel w-full max-w-5xl rounded-xl shadow-2xl overflow-hidden border border-outline-variant/20 flex flex-col max-h-[921px]">
+<!-- Header Section -->
+<header class="flex justify-between items-center px-8 py-6 border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-container rounded-lg flex items-center justify-center shadow-lg shadow-primary-container/20">
+<span class="material-symbols-outlined text-on-primary-container text-3xl" data-icon="fluid_meditation">fluid</span>
+</div>
+<div>
+<h2 class="font-headline text-2xl font-bold text-on-surface tracking-tight uppercase">Idea Pool</h2>
+<p class="text-on-surface-variant text-sm font-body italic">"Where the intangible meets the anvil."</p>
+</div>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-highest transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</header>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-12">
+<!-- Top Section: Drop a New Spark -->
+<section>
+<div class="flex items-center gap-3 mb-6">
+<span class="w-2 h-6 bg-primary"></span>
+<h3 class="font-headline text-lg font-bold tracking-widest uppercase">Drop a New Spark</h3>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 shadow-inner">
+<div class="flex flex-col md:flex-row gap-6">
+<div class="flex-1">
+<label class="block text-[10px] font-headline uppercase tracking-widest text-on-surface-variant mb-2">Input Manifestation</label>
+<textarea class="w-full bg-surface-container-lowest border-none rounded-lg p-4 font-body text-on-surface placeholder:text-slate-600 focus:ring-1 focus:ring-primary h-24 resize-none transition-all" placeholder="Describe your creative catalyst..."></textarea>
+</div>
+<div class="md:w-64 flex flex-col justify-between py-1">
+<div>
+<span class="block text-[10px] font-headline uppercase tracking-widest text-on-surface-variant mb-3 text-center md:text-left">Category Selection</span>
+<div class="flex md:flex-col gap-2">
+<button class="flex-1 flex items-center justify-center gap-2 py-2 px-3 border border-red-900/30 bg-red-950/20 text-red-400 rounded hover:bg-red-900/30 transition-all text-xs font-headline uppercase font-bold tracking-tighter">
+<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Physical
+                                        </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2 px-3 border border-blue-900/30 bg-blue-950/20 text-blue-400 rounded hover:bg-blue-900/30 transition-all text-xs font-headline uppercase font-bold tracking-tighter">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span> Virtual
+                                        </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2 px-3 border border-emerald-900/30 bg-emerald-950/20 text-emerald-400 rounded hover:bg-emerald-900/30 transition-all text-xs font-headline uppercase font-bold tracking-tighter">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Logic
+                                        </button>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container py-3 rounded-lg font-headline font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg shadow-primary-container/20 hover:scale-[1.02] transition-transform mt-4 md:mt-0">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span> Forge Now
+                                </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Middle Section: Active Forging -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<span class="w-2 h-6 bg-tertiary"></span>
+<h3 class="font-headline text-lg font-bold tracking-widest uppercase text-tertiary">Active Forging</h3>
+</div>
+<span class="text-[10px] font-headline text-slate-500 uppercase tracking-widest">3 Entities Processed by Moss AI</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-high p-5 rounded-lg border-l-4 border-primary relative overflow-hidden group">
+<div class="absolute -top-4 -right-4 w-20 h-20 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-headline font-bold text-on-surface leading-tight tracking-tight pr-8">Clockwork Automaton Core</h4>
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="engineering">engineering</span>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-[10px] font-headline uppercase tracking-tighter mb-1">
+<span class="text-on-surface-variant">Entropy Score</span>
+<span class="text-yellow-400">45% High</span>
+</div>
+<div class="h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-primary-container w-[45%] shadow-[0_0_8px_rgba(255,140,0,0.5)]"></div>
+</div>
+</div>
+<div class="flex items-center gap-2 py-2 px-3 bg-surface-container-lowest rounded border border-outline-variant/5">
+<span class="material-symbols-outlined text-tertiary text-sm animate-spin" data-icon="sync" style="animation-duration: 3s;">sync</span>
+<span class="text-[10px] font-headline uppercase tracking-widest text-tertiary">Analyzing Intent</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-high p-5 rounded-lg border-l-4 border-tertiary relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-headline font-bold text-on-surface leading-tight tracking-tight pr-8">Quantum Moss Substrate</h4>
+<span class="material-symbols-outlined text-tertiary" data-icon="memory">memory</span>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-[10px] font-headline uppercase tracking-tighter mb-1">
+<span class="text-on-surface-variant">Entropy Score</span>
+<span class="text-tertiary">12% Stable</span>
+</div>
+<div class="h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[12%] shadow-[0_0_8px_rgba(93,217,208,0.5)]"></div>
+</div>
+</div>
+<div class="flex items-center gap-2 py-2 px-3 bg-surface-container-lowest rounded border border-outline-variant/5">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="data_exploration">data_exploration</span>
+<span class="text-[10px] font-headline uppercase tracking-widest text-tertiary">Compiling Nodes</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-high p-5 rounded-lg border-l-4 border-error relative overflow-hidden group opacity-80">
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-headline font-bold text-on-surface leading-tight tracking-tight pr-8">Ethereal Steam Engine</h4>
+<span class="material-symbols-outlined text-error" data-icon="science">science</span>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-[10px] font-headline uppercase tracking-tighter mb-1">
+<span class="text-on-surface-variant">Entropy Score</span>
+<span class="text-error">89% Critical</span>
+</div>
+<div class="h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[89%] shadow-[0_0_8px_rgba(255,180,171,0.5)]"></div>
+</div>
+</div>
+<div class="flex items-center gap-2 py-2 px-3 bg-surface-container-lowest rounded border border-outline-variant/5">
+<span class="material-symbols-outlined text-error text-sm" data-icon="warning">warning</span>
+<span class="text-[10px] font-headline uppercase tracking-widest text-error">Cooling Required</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Section: Harvested Fruits -->
+<section>
+<div class="flex items-center gap-3 mb-6">
+<span class="w-2 h-6 bg-secondary"></span>
+<h3 class="font-headline text-lg font-bold tracking-widest uppercase text-on-surface">Harvested Fruits</h3>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Harvest Card 1 -->
+<div class="bg-surface-container-lowest p-4 rounded-lg flex flex-wrap items-center justify-between border border-outline-variant/5 hover:border-tertiary/20 transition-all group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container-high rounded flex items-center justify-center border border-outline-variant/10">
+<span class="material-symbols-outlined text-tertiary" data-icon="deployed_code" style="font-variation-settings: 'FILL' 1;">deployed_code</span>
+</div>
+<div>
+<h5 class="font-headline font-semibold text-sm text-on-surface">Void-Glass Prism</h5>
+<span class="text-[10px] font-headline text-slate-500 uppercase tracking-widest">Completed 2h ago</span>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="text-right">
+<span class="block text-[10px] font-headline uppercase tracking-widest text-on-surface-variant">Quality Score</span>
+<span class="text-xl font-headline font-bold text-tertiary">94<span class="text-xs text-slate-500">/100</span></span>
+</div>
+<a class="flex items-center gap-2 py-2 px-4 bg-surface-container-high rounded-full text-[10px] font-headline uppercase tracking-widest font-bold text-on-surface hover:bg-tertiary hover:text-on-tertiary transition-all" href="#">
+                                    View in Tree <span class="material-symbols-outlined text-sm" data-icon="account_tree">account_tree</span>
+</a>
+</div>
+</div>
+<!-- Harvest Card 2 -->
+<div class="bg-surface-container-lowest p-4 rounded-lg flex flex-wrap items-center justify-between border border-outline-variant/5 hover:border-tertiary/20 transition-all group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container-high rounded flex items-center justify-center border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary" data-icon="shield_with_heart" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+</div>
+<div>
+<h5 class="font-headline font-semibold text-sm text-on-surface">Bio-Mechanical Lattice</h5>
+<span class="text-[10px] font-headline text-slate-500 uppercase tracking-widest">Completed 5h ago</span>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="text-right">
+<span class="block text-[10px] font-headline uppercase tracking-widest text-on-surface-variant">Quality Score</span>
+<span class="text-xl font-headline font-bold text-tertiary-container">81<span class="text-xs text-slate-500">/100</span></span>
+</div>
+<a class="flex items-center gap-2 py-2 px-4 bg-surface-container-high rounded-full text-[10px] font-headline uppercase tracking-widest font-bold text-on-surface hover:bg-tertiary hover:text-on-tertiary transition-all" href="#">
+                                    View in Tree <span class="material-symbols-outlined text-sm" data-icon="account_tree">account_tree</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Status Bar -->
+<footer class="bg-surface-container-lowest/50 px-8 py-3 flex justify-between items-center text-[10px] font-headline uppercase tracking-widest border-t border-outline-variant/5">
+<div class="flex gap-4">
+<span class="text-slate-500">Forge Temperature: <span class="text-orange-400">2,450K</span></span>
+<span class="text-slate-500">Moss Integrity: <span class="text-tertiary">99.8%</span></span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary shadow-[0_0_6px_#5dd9d0]"></span>
+<span class="text-on-surface-variant">System Optimal</span>
+</div>
+</footer>
+</div>
+</main>
+<!-- Contextual FAB (Hidden as per mandate for detailed sub-screens, but showing as a reference logic) -->
+<!-- The FAB is suppressed here to prioritize the Idea Pool canvas focus -->
+</body></html>

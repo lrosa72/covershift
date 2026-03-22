@@ -1,7 +1,7 @@
-# Bazaar Retrospect
+# CoverShift 跃像
 
 <div align="center">
-  <h1>✨ Bazaar Retrospect ✨</h1>
+  <h1>✨ CoverShift 跃像 ✨</h1>
   <p><strong>Your Fashion Time Machine — Transform photos into magazine covers across decades</strong></p>
   <p><strong>你的时尚时光机 — 将照片穿越到各个年代</strong></p>
 </div>
@@ -14,17 +14,17 @@ Upload a photo, select decades, and generate fashion magazine covers from the 19
 
 | 1920s | 1930s | 1940s | 1950s | 1960s |
 |:-----:|:-----:|:-----:|:-----:|:-----:|
-| <img src="https://raw.githubusercontent.com/lrosa72/Bazaar-Retrospect/main/public/docs/assets/bazaar-1920s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/Bazaar-Retrospect/main/public/docs/assets/bazaar-1930s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/Bazaar-Retrospect/main/public/docs/assets/bazaar-1940s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/Bazaar-Retrospect/main/public/docs/assets/bazaar-1950s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/Bazaar-Retrospect/main/public/docs/assets/bazaar-1960s.jpg" width="150"> |
+| <img src="https://raw.githubusercontent.com/lrosa72/CoverShift/main/public/docs/assets/bazaar-1920s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/CoverShift/main/public/docs/assets/bazaar-1930s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/CoverShift/main/public/docs/assets/bazaar-1940s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/CoverShift/main/public/docs/assets/bazaar-1950s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/CoverShift/main/public/docs/assets/bazaar-1960s.jpg" width="150"> |
 
 | 1970s | 1980s | 1990s | 2000s |
 |:-----:|:-----:|:-----:|:-----:|
-| <img src="https://raw.githubusercontent.com/lrosa72/Bazaar-Retrospect/main/public/docs/assets/bazaar-1970s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/Bazaar-Retrospect/main/public/docs/assets/bazaar-1980s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/Bazaar-Retrospect/main/public/docs/assets/bazaar-1990s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/Bazaar-Retrospect/main/public/docs/assets/bazaar-2000s.jpg" width="150"> |
+| <img src="https://raw.githubusercontent.com/lrosa72/CoverShift/main/public/docs/assets/bazaar-1970s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/CoverShift/main/public/docs/assets/bazaar-1980s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/CoverShift/main/public/docs/assets/bazaar-1990s.jpg" width="150"> | <img src="https://raw.githubusercontent.com/lrosa72/CoverShift/main/public/docs/assets/bazaar-2000s.jpg" width="150"> |
 
 ---
 
 ## Project Introduction
 
-Bazaar Retrospect is an AI-powered fashion magazine cover generator that transforms your photos into magazine covers from different eras and styles using Gemini AI.
+CoverShift is an AI-powered fashion magazine cover generator that transforms your photos into magazine covers from different eras and styles using a configurable image model API.
 
 **Key Features:**
 
@@ -34,7 +34,7 @@ Bazaar Retrospect is an AI-powered fashion magazine cover generator that transfo
 - ✅ **Flexible Era Selection** - Choose from 1920s to 2100s
 - ✅ **Random Mode** - Let fate decide your fashion journey
 - ✅ **Preset Themes** - Golden Age, Disco Era, Millennial, Future Forward, and more
-- ✅ **Creative Styles** - 20 artistic styles (Cyberpunk, Vaporwave, Neoclassical, Renaissance, Film Noir, and more)
+- ✅ **Creative Styles** - 18 artistic styles + Original Era Style (19 total options)
 - ✅ **Custom Prompts** - Describe your own style
 - ✅ **History** - Save and reload previous results
 - ✅ **Gallery Views** - Scattered cards or neat grid layout
@@ -73,13 +73,13 @@ Bazaar Retrospect is an AI-powered fashion magazine cover generator that transfo
 ### Prerequisites
 
 - Node.js 18+
-- A Gemini API Key (get from [Google AI Studio](https://aistudio.google.com/app/apikey))
+- An image model API Key (from your selected provider)
 
 ### Installation
 
 1. **Clone or download the project**
    ```bash
-   cd Bazaar-Retrospect
+   cd CoverShift
    ```
 
 2. **Install dependencies**
@@ -87,21 +87,12 @@ Bazaar Retrospect is an AI-powered fashion magazine cover generator that transfo
    npm install
    ```
 
-3. **Configure API Key (Two Options)**
+3. **Configure API Key**
 
-   **Option A: Use the in-app modal (Recommended for quick setup)**
+   **Use the in-app modal (Recommended)**
    - Run `npm run dev`
    - The API Key setup modal will appear automatically on first visit
    - Or click the ⚙️ settings icon (top-left corner) anytime
-
-   **Option B: Use .env file (Recommended for permanent setup)**
-   ```bash
-   cp .env.example .env
-   ```
-   Edit `.env` and add your Gemini API Key:
-   ```
-   GEMINI_API_KEY=your_actual_api_key_here
-   ```
 
 4. **Start development server**
    ```bash
@@ -122,7 +113,7 @@ Bazaar Retrospect is an AI-powered fashion magazine cover generator that transfo
    - Select a clear portrait photo
 
 2. **Select Magazines**
-   - Choose 1-3 magazines for the cover style
+   - Choose 1-9 magazines for the cover style
    - Each magazine has unique typography and color schemes
 
 3. **Select Eras**
@@ -160,7 +151,7 @@ Bazaar Retrospect is an AI-powered fashion magazine cover generator that transfo
 ## Project Structure
 
 ```
-Bazaar-Retrospect/
+CoverShift/
 ├── components/
 │   ├── MagazineCover.tsx          # Magazine cover component (multi-style)
 │   ├── PolaroidCard.tsx           # Polaroid card
@@ -174,23 +165,29 @@ Bazaar-Retrospect/
 │   ├── Footer.tsx                 # Footer
 │   └── ui/
 │       └── draggable-card.tsx     # Draggable card
+├── hooks/
+│   └── usePlayerProgress.ts       # Player progress & achievements state
 ├── src/
 │   └── config/
 │       ├── magazines.ts           # Magazine configurations
 │       ├── eras.ts                # Era configurations (1920s-2100s)
-│       ├── creativeStyles.ts      # Creative style configs (20 styles)
-│       └── presets.ts             # Preset theme configs
+│       ├── creativeStyles.ts      # Creative style configs (19 options)
+│       ├── presets.ts             # Preset theme configs
+│       ├── randomEvents.ts        # Random events system
+│       └── achievements.ts        # Achievement system
 ├── services/
-│   └── geminiService.ts           # Gemini API service
+│   ├── imageModelService.ts       # Image model API call + retry
+│   ├── generationService.ts       # Generation task orchestration
+│   └── promptBuilder.ts           # Unified prompt builder
 ├── lib/
 │   ├── albumUtils.ts              # Album generation
 │   ├── historyUtils.ts            # History utilities
 │   └── utils.ts                   # Common utilities
+├── src-tauri/                     # Native shell (Tauri)
 ├── App.tsx                        # Main app component
 ├── index.tsx                      # Entry file
 ├── vite.config.ts                 # Vite config
 ├── tsconfig.json                  # TypeScript config
-├── .env.example                   # Environment template
 └── package.json
 ```
 
@@ -206,21 +203,13 @@ Bazaar-Retrospect/
 
 ---
 
-## Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GEMINI_API_KEY` | Yes | Gemini API key |
-
----
-
 ## Tech Stack
 
 - **React 19** - UI framework
 - **TypeScript** - Type safety
 - **Vite** - Build tool
 - **Framer Motion** - Animations
-- **Gemini API** - AI image generation
+- **Image Model API** - AI image generation
 - **JSZip** - ZIP file generation
 - **LocalStorage** - History storage
 
@@ -228,10 +217,10 @@ Bazaar-Retrospect/
 
 ## Notes
 
-1. **API Key Security**: Don't commit `.env` to Git
+1. **API Key Security**: API Key is stored in localStorage on your device
 2. **Photo Quality**: Clear frontal portraits work best
 3. **Generation Time**: First generation may take longer, please wait
-4. **Quota Limits**: Monitor your Gemini API quota usage
+4. **Quota Limits**: Monitor your model API quota usage
 5. **History**: Stored in browser LocalStorage, clearing browser data will lose history
 
 ---

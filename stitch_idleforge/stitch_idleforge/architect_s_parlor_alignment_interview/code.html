@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Architect's Parlor | Pipa's IdleForge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary": "#213243",
+                        "on-surface-variant": "#ddc1ae",
+                        "primary": "#ffb77d",
+                        "background": "#111316",
+                        "primary-container": "#ff8c00",
+                        "error-container": "#93000a",
+                        "surface-container": "#1e2023",
+                        "inverse-primary": "#904d00",
+                        "surface-tint": "#ffb77d",
+                        "on-tertiary-container": "#004743",
+                        "on-secondary-fixed-variant": "#38485a",
+                        "secondary": "#b7c8de",
+                        "outline": "#a48c7a",
+                        "on-tertiary-fixed": "#00201e",
+                        "surface-container-low": "#1a1c1f",
+                        "surface-dim": "#111316",
+                        "on-error-container": "#ffdad6",
+                        "outline-variant": "#564334",
+                        "surface": "#111316",
+                        "on-secondary-container": "#a9bad0",
+                        "surface-variant": "#333538",
+                        "on-background": "#e2e2e6",
+                        "tertiary-fixed-dim": "#5dd9d0",
+                        "surface-container-lowest": "#0c0e11",
+                        "surface-container-high": "#282a2d",
+                        "inverse-on-surface": "#2f3034",
+                        "tertiary-fixed": "#7cf6ec",
+                        "on-primary": "#4d2600",
+                        "surface-container-highest": "#333538",
+                        "on-tertiary-fixed-variant": "#00504c",
+                        "on-primary-fixed-variant": "#6e3900",
+                        "secondary-fixed": "#d2e4fb",
+                        "secondary-container": "#3a4b5d",
+                        "on-surface": "#e2e2e6",
+                        "on-primary-fixed": "#2f1500",
+                        "tertiary-container": "#38bcb3",
+                        "secondary-fixed-dim": "#b7c8de",
+                        "on-primary-container": "#623200",
+                        "surface-bright": "#37393d",
+                        "primary-fixed-dim": "#ffb77d",
+                        "on-error": "#690005",
+                        "primary-fixed": "#ffdcc3",
+                        "tertiary": "#5dd9d0",
+                        "error": "#ffb4ab",
+                        "inverse-surface": "#e2e2e6",
+                        "on-tertiary": "#003734",
+                        "on-secondary-fixed": "#0b1d2d"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tech-tree-glow {
+            filter: drop-shadow(0 0 8px rgba(255, 183, 125, 0.4));
+        }
+        .glass-panel {
+            background: rgba(30, 32, 35, 0.7);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-slate-900/60 backdrop-blur-md dark:bg-stone-950/60 shadow-2xl shadow-orange-900/20 bg-gradient-to-b from-orange-500/10 to-transparent">
+<div class="text-2xl font-black text-orange-500 italic tracking-tighter">Pipa's IdleForge</div>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="font-['Space_Grotesk'] tracking-tight text-sm uppercase text-slate-400 hover:text-orange-300 transition-colors" href="#">Entropy</a>
+<a class="font-['Space_Grotesk'] tracking-tight text-sm uppercase text-slate-400 hover:text-orange-300 transition-colors" href="#">Resources</a>
+<a class="font-['Space_Grotesk'] tracking-tight text-sm uppercase text-slate-400 hover:text-orange-300 transition-colors" href="#">Stats</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 text-orange-500 hover:bg-orange-500/10 hover:backdrop-blur-lg rounded-full transition-all">
+<span class="material-symbols-outlined">notifications_active</span>
+</button>
+<button class="p-2 text-orange-500 hover:bg-orange-500/10 hover:backdrop-blur-lg rounded-full transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden">
+<img alt="Pipa's Avatar" class="w-full h-full" data-alt="Small pixel art avatar of a female blacksmith" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8RXHi7xorCOC5nwPUG9K-b4w8SvOO2KeYWHOWLmK4tT1twdnnORcaMSJmIuqQ7uN79EjQaJ2R_kS0it8cxc1SG8sx4rIIdR9sIeZQDmbG36lpSJIbIXicCzxHfpRq2yt-3-DT0c5Rx4hRHdfqJMWuK9rThaLF_WBO8nj8mZi0UBlEh824zzAMIPsgqGbNy85VAqWN85-T8QwYl6PpqwyfIOe8WRf53GbNn2sbKhwi_cKb5uJ2L1YxC4S5XZixMOWJEmpT4o2MsuE"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col pt-20 bg-slate-950 dark:bg-stone-950 w-64 shadow-[4px_0_24px_rgba(0,0,0,0.5)] z-40">
+<div class="px-6 mb-8 flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-secondary-container rounded-lg flex items-center justify-center mb-3 shadow-lg">
+<span class="material-symbols-outlined text-tertiary text-3xl" style="font-variation-settings: 'FILL' 1;">memory</span>
+</div>
+<h2 class="font-headline font-bold text-xs uppercase tracking-widest text-cyan-400">MOSS v2.1</h2>
+<p class="text-[10px] text-slate-500 font-label italic uppercase">Engine Online</p>
+</div>
+<nav class="flex-1">
+<a class="text-slate-500 px-4 py-3 flex items-center gap-3 hover:bg-slate-800/50 hover:translate-x-1 transition-all duration-200 font-label font-bold text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">precision_manufacturing</span> Factory Floor
+            </a>
+<a class="bg-orange-500/20 text-orange-400 border-r-4 border-orange-500 px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">architecture</span> Architect's Parlor
+            </a>
+<a class="text-slate-500 px-4 py-3 flex items-center gap-3 hover:bg-slate-800/50 hover:translate-x-1 transition-all duration-200 font-label font-bold text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">memory</span> Moss Engine
+            </a>
+<a class="text-slate-500 px-4 py-3 flex items-center gap-3 hover:bg-slate-800/50 hover:translate-x-1 transition-all duration-200 font-label font-bold text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">nature_people</span> World Tree
+            </a>
+</nav>
+<div class="p-6">
+<button class="w-full py-3 bg-primary text-on-primary font-headline font-bold text-xs uppercase tracking-widest rounded transition-transform active:scale-95 shadow-lg shadow-primary/20">
+                Forge Item
+            </button>
+</div>
+<div class="mt-auto border-t border-slate-800 py-4">
+<a class="text-slate-500 px-4 py-2 flex items-center gap-3 hover:text-slate-300 font-label text-[10px] uppercase" href="#">
+<span class="material-symbols-outlined text-sm">help</span> Support
+            </a>
+<a class="text-slate-500 px-4 py-2 flex items-center gap-3 hover:text-slate-300 font-label text-[10px] uppercase" href="#">
+<span class="material-symbols-outlined text-sm">terminal</span> Logs
+            </a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="pl-64 pt-16 min-h-screen pb-8">
+<div class="relative w-full h-full p-10 overflow-hidden">
+<!-- Background Elements: Tech Tree Wall -->
+<div class="absolute right-0 top-0 w-1/2 h-full -z-10 opacity-20 pointer-events-none p-10">
+<svg class="w-full h-full tech-tree-glow" fill="none" viewbox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+<path d="M200 600V400M200 400L100 300M200 400L300 300M100 300V200M300 300V200M100 200L50 150M100 200L150 150M300 200L250 150M300 200L350 150" stroke="#ffb77d" stroke-dasharray="8 4" stroke-width="2"></path>
+<circle cx="200" cy="400" fill="#ffb77d" r="8"></circle>
+<circle cx="100" cy="300" fill="#ffb77d" r="6"></circle>
+<circle cx="300" cy="300" fill="#ffb77d" r="6"></circle>
+<circle cx="50" cy="150" fill="#ffb77d" r="4"></circle>
+<circle cx="350" cy="150" fill="#ffb77d" r="4"></circle>
+</svg>
+</div>
+<!-- Header Section -->
+<header class="mb-12">
+<div class="flex items-center gap-4 mb-2">
+<span class="material-symbols-outlined text-primary text-4xl">architecture</span>
+<h1 class="font-headline text-4xl font-black text-on-surface uppercase tracking-tight">Architect's Parlor</h1>
+</div>
+<p class="text-secondary max-w-xl italic border-l-2 border-primary/30 pl-4 font-body text-lg">
+                    "Strategy is the forge of the mind. Let us align the embers of your intent before we strike the iron."
+                </p>
+</header>
+<!-- Main Layout: Bento Grid -->
+<div class="grid grid-cols-12 gap-8">
+<!-- Central Element: Project Interview Box -->
+<section class="col-span-12 lg:col-span-8 space-y-8">
+<div class="relative glass-panel rounded-xl p-8 border border-white/5 shadow-2xl">
+<!-- Agent Tag -->
+<div class="absolute -top-4 left-8 bg-surface-container-highest px-4 py-1 flex items-center gap-2 rounded border border-outline-variant">
+<img alt="Architect Portrait" class="w-6 h-6" data-alt="Pixel art stylized AI robot head" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAydI0g0I2WZMg4cA4Iy2ua98env5iTWJSP2AFuYwP5rR-zl5W0OHimdP_EI6xfFGi7obsD4ejR3ytpnF28E20IGxuPmlzXOERpSmwuXBCCp6XhontNQA-tBbT0KXSvyocbwtCiqrwMo8JFqBzSSFj-0RQyZxSDodeYY-N88208xVzNjJNSS6IzNEwdY77vQZvvzs1sdXyMoGd5wosIhDQx5GWIkSvETOeYjf5C7hCSVB85u6yh55ptSo-ZTxVQR_y6C06UMh5OJ64"/>
+<span class="font-headline font-bold text-[10px] tracking-widest text-tertiary-fixed uppercase">Architect Agent • High-Alignment Mode</span>
+</div>
+<div class="mt-4 space-y-10">
+<!-- Question 1 -->
+<div class="group">
+<label class="block font-headline text-sm text-primary mb-4 tracking-wider flex items-center gap-3">
+<span class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-black text-primary border border-primary/30">01</span>
+                                    WHAT IS THE PRIMARY CORE OF YOUR CONSTRUCT?
+                                </label>
+<div class="relative">
+<textarea class="w-full bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 text-on-surface font-body p-4 transition-all h-24 placeholder:text-surface-variant" placeholder="Describe the soul of the project..."></textarea>
+<div class="absolute right-4 bottom-4 flex gap-2">
+<span class="material-symbols-outlined text-outline-variant text-lg">edit_note</span>
+</div>
+</div>
+</div>
+<!-- Question 2 (Options) -->
+<div class="group">
+<label class="block font-headline text-sm text-primary mb-4 tracking-wider flex items-center gap-3">
+<span class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-black text-primary border border-primary/30">02</span>
+                                    SELECT THE DOMINANT ENERGY SIGNATURE:
+                                </label>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<button class="bg-surface-container-high p-4 rounded-lg text-left border-l-4 border-transparent hover:border-tertiary hover:bg-surface-bright transition-all group/btn">
+<div class="flex items-center gap-3 mb-1">
+<span class="material-symbols-outlined text-tertiary">bolt</span>
+<span class="font-headline text-xs font-bold tracking-widest">KINETIC</span>
+</div>
+<p class="text-[10px] text-secondary font-body">Fast-paced, aggressive growth.</p>
+</button>
+<button class="bg-surface-container-high p-4 rounded-lg text-left border-l-4 border-tertiary bg-surface-bright transition-all group/btn">
+<div class="flex items-center gap-3 mb-1">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">shield</span>
+<span class="font-headline text-xs font-bold tracking-widest text-on-surface">STABLE</span>
+</div>
+<p class="text-[10px] text-secondary font-body">Durable, enduring structures.</p>
+</button>
+<button class="bg-surface-container-high p-4 rounded-lg text-left border-l-4 border-transparent hover:border-tertiary hover:bg-surface-bright transition-all group/btn">
+<div class="flex items-center gap-3 mb-1">
+<span class="material-symbols-outlined text-tertiary">auto_awesome</span>
+<span class="font-headline text-xs font-bold tracking-widest">ETHEREAL</span>
+</div>
+<p class="text-[10px] text-secondary font-body">Abstract, magical artifacts.</p>
+</button>
+</div>
+</div>
+<!-- Floating Action Buttons for Decision Anchors -->
+<div class="pt-6 border-t border-outline-variant/30 flex justify-between items-center">
+<div class="flex gap-4">
+<button class="flex items-center gap-2 text-outline hover:text-primary transition-colors font-headline text-[10px] font-bold tracking-widest uppercase">
+<span class="material-symbols-outlined text-sm">history</span> Load Previous
+                                    </button>
+<button class="flex items-center gap-2 text-outline hover:text-primary transition-colors font-headline text-[10px] font-bold tracking-widest uppercase">
+<span class="material-symbols-outlined text-sm">auto_fix</span> Suggest Response
+                                    </button>
+</div>
+<button class="px-8 py-3 bg-primary-container text-on-primary-container font-headline font-black text-xs uppercase tracking-widest flex items-center gap-3 rounded shadow-[0_0_20px_rgba(255,140,0,0.3)] hover:brightness-110 transition-all active:scale-95">
+                                    Submit Blueprint <span class="material-symbols-outlined text-sm">rocket_launch</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Sidebar: Artifacts & Details -->
+<aside class="col-span-12 lg:col-span-4 space-y-8">
+<!-- Blueprints Stack -->
+<div class="bg-surface-container-low p-6 rounded-lg relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-10 group-hover:rotate-12 transition-transform duration-500">
+<span class="material-symbols-outlined text-9xl">description</span>
+</div>
+<h3 class="font-headline font-bold text-xs text-primary mb-6 tracking-widest uppercase">Active Blueprints</h3>
+<div class="space-y-4">
+<div class="flex items-center gap-4 p-3 bg-surface-container-high rounded border-l-2 border-primary/50">
+<span class="material-symbols-outlined text-primary">draw</span>
+<div class="flex-1">
+<p class="text-xs font-headline font-bold text-on-surface">MOSS_CORE_SHIELD.pdf</p>
+<p class="text-[10px] text-secondary">Ver. 0.9 • Draft</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 bg-surface-container-high rounded hover:bg-surface-bright transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-outline">history_edu</span>
+<div class="flex-1">
+<p class="text-xs font-headline font-bold text-on-surface">PIPA_ANVIL_V4.dwg</p>
+<p class="text-[10px] text-secondary">Archived</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Quill & Decisions -->
+<div class="bg-surface-container-high/50 p-6 rounded-lg border border-outline-variant/20">
+<h3 class="font-headline font-bold text-xs text-tertiary mb-6 tracking-widest uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">history_edu</span> Architect's Tools
+                        </h3>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary border border-tertiary/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">architecture</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-xs text-on-surface">Sophisticated Quill</h4>
+<p class="text-[10px] text-secondary italic">Records alignment with 99.9% semantic accuracy.</p>
+</div>
+</div>
+<!-- Decision Anchors -->
+<div class="grid grid-cols-2 gap-3 pt-4">
+<div class="flex items-center gap-2 text-[10px] font-label uppercase tracking-widest text-outline bg-surface-container-lowest p-2 rounded">
+<span class="material-symbols-outlined text-xs text-primary">anchor</span> Anchor: Empathy
+                                </div>
+<div class="flex items-center gap-2 text-[10px] font-label uppercase tracking-widest text-outline bg-surface-container-lowest p-2 rounded">
+<span class="material-symbols-outlined text-xs text-primary">anchor</span> Anchor: Logic
+                                </div>
+</div>
+</div>
+</div>
+<!-- Agent Status -->
+<div class="bg-surface-container-low p-6 rounded-lg border border-tertiary/10">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline font-bold text-xs text-on-surface tracking-widest uppercase">System Harmony</h3>
+<span class="text-tertiary font-headline font-black text-xl">84%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-tertiary to-tertiary-fixed w-[84%]"></div>
+</div>
+<p class="text-[10px] text-secondary mt-3 italic leading-relaxed">
+                            Moss AI is resonating with your current design intent. High alignment detected.
+                        </p>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 w-full z-[100] flex items-center overflow-hidden bg-cyan-950/80 backdrop-blur-xl h-8 border-t border-cyan-500/30 shadow-[0_-4px_20px_rgba(93,217,208,0.2)]">
+<div class="flex items-center px-4 text-cyan-300 font-['Space_Grotesk'] italic text-[10px] tracking-widest">
+<span class="material-symbols-outlined text-xs mr-2">sensors</span>
+            Moss Broadcast: System Entropy at 4%... Engines Purring...
+        </div>
+</footer>
+</body></html>

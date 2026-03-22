@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>工坊终端 FORGE_TERMINAL - 想法池</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @font-face {
+            font-family: 'Silver';
+            src: url('https://fonts.cdnfonts.com/s/73154/Silver.woff') format('woff');
+        }
+        
+        body {
+            background-color: #121416;
+            image-rendering: pixelated;
+            overflow-x: hidden;
+        }
+
+        .pixel-font {
+            font-family: 'Silver', 'Zpix', monospace;
+        }
+
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.1) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .pixel-bevel-out {
+            box-shadow: 
+                inset 2px 2px 0px 0px rgba(255, 255, 255, 0.1),
+                inset -2px -2px 0px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        .pixel-bevel-in {
+            box-shadow: 
+                inset -2px -2px 0px 0px rgba(255, 255, 255, 0.05),
+                inset 2px 2px 0px 0px rgba(0, 0, 0, 0.8);
+        }
+
+        .dither-bg {
+            background-image: radial-gradient(#333537 1px, transparent 1px);
+            background-size: 4px 4px;
+        }
+
+        .steps-4 {
+            transition-timing-function: steps(4);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffb77d",
+                        "surface": "#121416",
+                        "surface-container": "#1e2022",
+                        "surface-container-low": "#1a1c1e",
+                        "surface-container-highest": "#333537",
+                        "on-surface": "#e2e2e5",
+                        "on-surface-variant": "#ddc1ae",
+                        "secondary-container": "#00fbfb",
+                        "primary-container": "#ff8c00",
+                        "outline": "#a48c7a",
+                        "surface-bright": "#37393b"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Space Grotesk"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="text-on-surface font-body">
+<!-- Scanline Overlay -->
+<div class="scanline-overlay"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full border-b-4 border-[#333537] bg-[#121416] flex justify-between items-center px-6 h-16 z-50 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex items-center gap-4">
+<span class="text-[#FF8C00] font-black text-2xl uppercase italic pixel-font tracking-wider">工坊终端 FORGE_TERMINAL</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="text-[#ddc1ae] hover:bg-[#333537] hover:text-[#FF8C00] steps-4 p-2 active:translate-y-1 active:translate-x-1 transition-all">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="text-[#ddc1ae] hover:bg-[#333537] hover:text-[#FF8C00] steps-4 p-2 active:translate-y-1 active:translate-x-1 transition-all">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</button>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r-4 border-[#333537] bg-[#1a1c1e] bg-opacity-95 backdrop-blur-none z-40 hidden md:flex flex-col py-4 gap-2">
+<div class="px-6 py-4 mb-4 border-b-2 border-[#333537]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-[#333537] border-2 border-[#00FFFF] flex items-center justify-center">
+<span class="material-symbols-outlined text-[#00FFFF]" data-icon="account_circle">account_circle</span>
+</div>
+<div>
+<h3 class="pixel-font text-[#00FFFF] font-bold">核心协议</h3>
+<p class="text-[10px] text-[#ddc1ae] font-label">版本 1.0.4-BETA</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="bg-[#FF8C00] text-[#121416] border-l-4 border-[#00FFFF] font-bold px-6 py-3 flex items-center gap-4" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="pixel-font text-lg">想法池</span>
+</a>
+<a class="text-[#ddc1ae] hover:bg-[#333537] hover:text-[#00FFFF] hover:border-l-4 hover:border-[#00FFFF] px-6 py-3 border-l-4 border-transparent flex items-center gap-4 transition-all steps-4 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="hardware">hardware</span>
+<span class="pixel-font text-lg">活跃锻造</span>
+</a>
+<a class="text-[#ddc1ae] hover:bg-[#333537] hover:text-[#00FFFF] hover:border-l-4 hover:border-[#00FFFF] px-6 py-3 border-l-4 border-transparent flex items-center gap-4 transition-all steps-4 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="pixel-font text-lg">系统状态</span>
+</a>
+<a class="text-[#ddc1ae] hover:bg-[#333537] hover:text-[#00FFFF] hover:border-l-4 hover:border-[#00FFFF] px-6 py-3 border-l-4 border-transparent flex items-center gap-4 transition-all steps-4 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="pixel-font text-lg">世界大树</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<button class="w-full bg-[#333537] text-[#FF8C00] border-2 border-[#FF8C00] pixel-font py-2 hover:bg-[#FF8C00] hover:text-[#121416] transition-all steps-4 active:translate-y-1">
+                紧急冷却
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-24 pb-12 px-6 min-h-screen bg-[#121416] relative overflow-hidden">
+<!-- Background Texture Decor -->
+<div class="absolute inset-0 dither-bg opacity-10 pointer-events-none"></div>
+<!-- Page Title Section -->
+<div class="mb-10 relative z-10 border-l-8 border-[#FF8C00] pl-6">
+<h1 class="pixel-font text-4xl text-[#FF8C00] tracking-widest">想法池 - 灵感汇聚之地</h1>
+<p class="text-[#ddc1ae] font-label tracking-tighter mt-1 opacity-80 uppercase">IDEA_POOL // SOURCE_OF_FORGE_V1.0</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
+<!-- Left Column: Input & Categories -->
+<div class="lg:col-span-5 space-y-8">
+<!-- Section: Drop a New Spark -->
+<section class="bg-surface-container-low border-4 border-[#333537] p-6 pixel-bevel-out">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-[#FF8C00]" data-icon="bolt">bolt</span>
+<h2 class="pixel-font text-2xl text-on-surface">投放新火花</h2>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest border-4 border-[#333537] p-4 pixel-bevel-in">
+<textarea class="w-full bg-transparent border-none text-primary focus:ring-0 pixel-font text-xl resize-none h-24 placeholder:text-[#333537]" placeholder="输入新的构想..."></textarea>
+</div>
+<div class="flex flex-wrap gap-3">
+<button class="flex-1 bg-surface-container-highest border-b-4 border-red-900 text-red-400 pixel-font py-2 px-4 hover:brightness-110 active:translate-y-1 active:border-b-0 transition-all steps-4">
+                                现实 [REAL]
+                            </button>
+<button class="flex-1 bg-surface-container-highest border-b-4 border-blue-900 text-blue-400 pixel-font py-2 px-4 hover:brightness-110 active:translate-y-1 active:border-b-0 transition-all steps-4">
+                                虚拟 [VIRT]
+                            </button>
+<button class="flex-1 bg-surface-container-highest border-b-4 border-green-900 text-green-400 pixel-font py-2 px-4 hover:brightness-110 active:translate-y-1 active:border-b-0 transition-all steps-4">
+                                逻辑 [LOGI]
+                            </button>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container font-bold pixel-font text-xl py-4 border-b-4 border-black hover:bg-primary transition-all steps-4 active:translate-y-1 active:border-b-0">
+                            确认投放注入 (ENTER)
+                        </button>
+</div>
+</section>
+<!-- Section: Stats / Status Readout -->
+<section class="bg-[#0c0e10] border-4 border-[#333537] p-4 font-mono text-[12px] text-[#00FFFF] opacity-80">
+<div class="flex justify-between border-b border-[#333537] pb-1 mb-2">
+<span>CORE_TEMP: 42°C</span>
+<span>BUFFER: 88%</span>
+</div>
+<p>&gt; 正在监听灵感波动...</p>
+<p>&gt; 发现 3 个未处理的逻辑切片</p>
+<p>&gt; 冷却系统运行正常</p>
+</section>
+</div>
+<!-- Right Column: Active Forging & Harvested Fruits -->
+<div class="lg:col-span-7 space-y-8">
+<!-- Section: Active Forging -->
+<section class="space-y-4">
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#00FFFF]" data-icon="settings_slow_motion">settings_slow_motion</span>
+<h2 class="pixel-font text-2xl text-on-surface">活跃锻造</h2>
+</div>
+<span class="text-[#00FFFF] text-xs font-label">QUEUE: 02/05</span>
+</div>
+<div class="space-y-4">
+<!-- Forging Card 1 -->
+<div class="bg-surface-container border-4 border-[#333537] p-5 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 bg-[#00FFFF] text-[#121416] pixel-font text-xs">锻造中...</div>
+<div class="flex gap-4 mb-4">
+<div class="w-16 h-16 bg-surface-container-highest border-2 border-[#00FFFF] flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-[#00FFFF]" data-icon="precision_manufacturing">precision_manufacturing</span>
+</div>
+<div class="flex-1">
+<h3 class="pixel-font text-2xl text-primary">发条自动化核心</h3>
+<p class="text-xs text-on-surface-variant font-label">类别: 逻辑 | 剩余时间: 02:45</p>
+</div>
+</div>
+<!-- Heat Gauge -->
+<div class="bg-surface-container-lowest h-6 border-2 border-[#333537] p-1 flex gap-1">
+<div class="h-full w-full bg-gradient-to-r from-[#00FFFF] to-[#FF8C00]" style="clip-path: inset(0 35% 0 0);"></div>
+</div>
+<div class="flex justify-between mt-1 text-[10px] font-label text-[#00FFFF]">
+<span>65% 灵力注入</span>
+<span>热度稳定</span>
+</div>
+</div>
+<!-- Forging Card 2 -->
+<div class="bg-surface-container border-4 border-[#333537] p-5 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+<div class="flex gap-4 mb-4">
+<div class="w-16 h-16 bg-surface-container-highest border-2 border-[#333537] flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant" data-icon="cloud_sync">cloud_sync</span>
+</div>
+<div class="flex-1">
+<h3 class="pixel-font text-2xl text-on-surface-variant">以太连接协议</h3>
+<p class="text-xs text-on-surface-variant font-label">等待资源中...</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest h-6 border-2 border-[#333537] p-1">
+<div class="h-full w-4 bg-[#333537]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Harvested Fruits -->
+<section class="bg-surface-container-low border-4 border-[#333537] p-6">
+<div class="flex items-center gap-2 mb-6 border-b-2 border-[#333537] pb-4">
+<span class="material-symbols-outlined text-[#FF8C00]" data-icon="inventory_2">inventory_2</span>
+<h2 class="pixel-font text-2xl text-on-surface">已收割果实</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Harvested Item 1 -->
+<div class="flex items-center gap-3 p-3 bg-surface-container-highest border-l-4 border-yellow-500 hover:bg-[#3d4043] transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-yellow-500" data-icon="diamond" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<div class="flex-1">
+<div class="pixel-font text-lg leading-tight">蒸汽活塞图纸</div>
+<div class="text-[10px] font-label text-[#ddc1ae]">品质: 88 (史诗)</div>
+</div>
+</div>
+<!-- Harvested Item 2 -->
+<div class="flex items-center gap-3 p-3 bg-surface-container-highest border-l-4 border-blue-500 hover:bg-[#3d4043] transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-blue-500" data-icon="auto_awesome">auto_awesome</span>
+<div class="flex-1">
+<div class="pixel-font text-lg leading-tight">微光电路板</div>
+<div class="text-[10px] font-label text-[#ddc1ae]">品质: 62 (稀有)</div>
+</div>
+</div>
+<!-- Harvested Item 3 -->
+<div class="flex items-center gap-3 p-3 bg-surface-container-highest border-l-4 border-gray-500 hover:bg-[#3d4043] transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-gray-500" data-icon="token">token</span>
+<div class="flex-1">
+<div class="pixel-font text-lg leading-tight">生锈的螺栓</div>
+<div class="text-[10px] font-label text-[#ddc1ae]">品质: 15 (普通)</div>
+</div>
+</div>
+<!-- Harvested Item 4 -->
+<div class="flex items-center gap-3 p-3 bg-surface-container-highest border-l-4 border-red-500 hover:bg-[#3d4043] transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-red-500" data-icon="local_fire_department">local_fire_department</span>
+<div class="flex-1">
+<div class="pixel-font text-lg leading-tight">压缩燃油包</div>
+<div class="text-[10px] font-label text-[#ddc1ae]">品质: 74 (稀有)</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 border-2 border-dashed border-[#333537] py-2 text-[#ddc1ae] font-label text-sm hover:border-[#FF8C00] hover:text-[#FF8C00] transition-all">
+                        查看完整仓库记录...
+                    </button>
+</section>
+</div>
+</div>
+</main>
+<!-- Navigation Pivot for Mobile -->
+<nav class="md:hidden fixed bottom-0 w-full bg-[#121416] border-t-4 border-[#333537] flex justify-around items-center h-16 z-50">
+<button class="flex flex-col items-center gap-1 text-[#00FFFF]">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="pixel-font text-[10px]">想法池</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#ddc1ae]">
+<span class="material-symbols-outlined" data-icon="hardware">hardware</span>
+<span class="pixel-font text-[10px]">锻造</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#ddc1ae]">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="pixel-font text-[10px]">系统</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#ddc1ae]">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="pixel-font text-[10px]">世界</span>
+</button>
+</nav>
+</body></html>

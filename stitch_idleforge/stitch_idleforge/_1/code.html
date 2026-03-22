@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>熔炉工程 - 工坊全景图</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @font-face {
+            font-family: 'Zpix';
+            src: url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@master/dist/zpix.ttf');
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #121416;
+            image-rendering: pixelated;
+            overflow: hidden;
+        }
+
+        .pixel-font { font-family: 'Zpix', sans-serif; }
+        
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .isometric-grid {
+            background-image: 
+                linear-gradient(30deg, #333537 12%, transparent 12.5%, transparent 87%, #333537 87.5%, #333537),
+                linear-gradient(150deg, #333537 12%, transparent 12.5%, transparent 87%, #333537 87.5%, #333537),
+                linear-gradient(30deg, #333537 12%, transparent 12.5%, transparent 87%, #333537 87.5%, #333537),
+                linear-gradient(150deg, #333537 12%, transparent 12.5%, transparent 87%, #333537 87.5%, #333537),
+                linear-gradient(60deg, #1a1c1e 25%, transparent 25.5%, transparent 75%, #1a1c1e 75%, #1a1c1e),
+                linear-gradient(60deg, #1a1c1e 25%, transparent 25.5%, transparent 75%, #1a1c1e 75%, #1a1c1e);
+            background-size: 80px 140px;
+            background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+        }
+
+        .dither-pattern {
+            background-image: radial-gradient(#ff8c00 1px, transparent 1px);
+            background-size: 4px 4px;
+        }
+
+        .bevel-box {
+            border-top: 2px solid #37393b;
+            border-left: 2px solid #37393b;
+            border-right: 2px solid #0c0e10;
+            border-bottom: 2px solid #0c0e10;
+        }
+        
+        .active-tab-glow {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "inverse-surface": "#e2e2e5",
+                "on-tertiary": "#3a3000",
+                "on-background": "#e2e2e5",
+                "on-tertiary-container": "#4b3e00",
+                "secondary-container": "#00fbfb",
+                "on-surface-variant": "#ddc1ae",
+                "on-secondary": "#003737",
+                "primary-fixed-dim": "#ffb77d",
+                "outline-variant": "#564334",
+                "surface-container-lowest": "#0c0e10",
+                "surface-container": "#1e2022",
+                "tertiary-fixed-dim": "#e9c400",
+                "tertiary-fixed": "#ffe16d",
+                "on-secondary-container": "#007070",
+                "on-error": "#690005",
+                "secondary-fixed-dim": "#00dddd",
+                "secondary": "#ffffff",
+                "on-error-container": "#ffdad6",
+                "surface-bright": "#37393b",
+                "error": "#ffb4ab",
+                "on-surface": "#e2e2e5",
+                "surface-dim": "#121416",
+                "on-tertiary-fixed-variant": "#544600",
+                "secondary-fixed": "#00fbfb",
+                "tertiary": "#e9c400",
+                "surface-container-high": "#282a2c",
+                "surface-tint": "#ffb77d",
+                "outline": "#a48c7a",
+                "surface-variant": "#333537",
+                "on-primary-fixed": "#2f1500",
+                "on-primary": "#4d2600",
+                "primary": "#ffb77d",
+                "inverse-on-surface": "#2f3133",
+                "surface-container-highest": "#333537",
+                "background": "#121416",
+                "surface-container-low": "#1a1c1e",
+                "primary-fixed": "#ffdcc3",
+                "on-primary-container": "#623200",
+                "on-secondary-fixed-variant": "#004f4f",
+                "primary-container": "#ff8c00",
+                "on-secondary-fixed": "#002020",
+                "inverse-primary": "#904d00",
+                "error-container": "#93000a",
+                "tertiary-container": "#c7a800",
+                "on-primary-fixed-variant": "#6e3900",
+                "surface": "#121416",
+                "on-tertiary-fixed": "#221b00"
+              },
+              fontFamily: {
+                "headline": ["Space Grotesk"],
+                "body": ["Space Grotesk"],
+                "label": ["Space Grotesk"]
+              },
+              borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "0px"},
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-surface text-on-surface overflow-hidden">
+<div class="scanline-overlay"></div>
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#121416] border-b-4 border-r-4 border-[#333537] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex items-center gap-4">
+<span class="pixel-font text-2xl text-orange-500 antialiased">熔炉工程 (Forge Engineering)</span>
+<div class="hidden md:flex gap-6 ml-8">
+<a class="pixel-font text-lg uppercase text-cyan-400 font-bold border-b-2 border-cyan-400 transition-[steps(4)] hover:text-orange-400" href="#">工厂大厅</a>
+<a class="pixel-font text-lg uppercase text-[#ddc1ae] hover:bg-[#1a1c1e] hover:text-orange-400 transition-[steps(4)]" href="#">运行报告</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-orange-500 hover:text-cyan-400 active:translate-x-0.5 active:translate-y-0.5 transition-transform" data-icon="thermostat">thermostat</button>
+<button class="material-symbols-outlined text-orange-500 hover:text-cyan-400 active:translate-x-0.5 active:translate-y-0.5 transition-transform" data-icon="bolt">bolt</button>
+<button class="material-symbols-outlined text-orange-500 hover:text-cyan-400 active:translate-x-0.5 active:translate-y-0.5 transition-transform" data-icon="settings">settings</button>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-100px)] w-64 bg-[#1a1c1e] border-r-4 border-[#333537] flex flex-col py-8 gap-2 z-40 hidden md:flex">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-highest border-2 border-orange-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-orange-500" data-icon="person">person</span>
+</div>
+<div>
+<div class="pixel-font text-base tracking-widest text-cyan-400">熔炉主管</div>
+<div class="text-[10px] text-on-surface-variant font-headline uppercase">第 001 区</div>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="bg-orange-500/20 text-orange-500 border-l-4 border-orange-500 px-4 py-3 flex items-center gap-3 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="pixel-font">灵感池 (Idea Pool)</span>
+</div>
+<div class="text-[#ddc1ae] px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-[#333537] hover:text-cyan-400 transition-[steps(4)]">
+<span class="material-symbols-outlined" data-icon="fireplace">fireplace</span>
+<span class="pixel-font">活跃熔炉 (Active Forge)</span>
+</div>
+<div class="text-[#ddc1ae] px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-[#333537] hover:text-cyan-400 transition-[steps(4)]">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="pixel-font">系统状态 (System Status)</span>
+</div>
+<div class="text-[#ddc1ae] px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-[#333537] hover:text-cyan-400 transition-[steps(4)]">
+<span class="material-symbols-outlined" data-icon="park">park</span>
+<span class="pixel-font">世界树 (World Tree)</span>
+</div>
+</nav>
+<div class="mt-auto px-4">
+<button class="w-full py-3 bg-red-900/30 border-2 border-red-600 text-red-500 pixel-font text-sm hover:bg-red-600 hover:text-white transition-all active:translate-x-1">
+                紧急冷却 (Emergency Coolant)
+            </button>
+</div>
+</aside>
+<!-- Main Canvas: Factory Floor -->
+<main class="ml-0 md:ml-64 pt-16 h-screen relative bg-surface-container-lowest overflow-hidden">
+<!-- Isometric Background -->
+<div class="absolute inset-0 isometric-grid opacity-40"></div>
+<!-- Isometric Elements Placeholder Layer -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="relative w-[1200px] h-[800px] transform scale-75 md:scale-100">
+<!-- World Tree Base (Asymmetric Anchor) -->
+<div class="absolute top-20 right-20 w-64 h-64 border-4 border-cyan-500/30 flex flex-col items-center justify-center bg-surface-container/40 backdrop-blur-sm pointer-events-auto group">
+<div class="pixel-font text-cyan-400 text-xl mb-4">世界大树</div>
+<div class="w-32 h-48 bg-surface-container-highest border-t-4 border-l-4 border-cyan-400 relative">
+<div class="absolute inset-x-2 top-2 bottom-2 bg-gradient-to-t from-cyan-900 to-cyan-400 opacity-20"></div>
+<span class="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-cyan-400 text-5xl" data-icon="park">park</span>
+</div>
+<div class="mt-4 flex gap-1">
+<div class="w-2 h-2 bg-cyan-400 animate-pulse"></div>
+<div class="w-2 h-2 bg-cyan-400 animate-pulse" style="animation-delay: 0.2s"></div>
+<div class="w-2 h-2 bg-cyan-400 animate-pulse" style="animation-delay: 0.4s"></div>
+</div>
+</div>
+<!-- Hatchery Zone -->
+<div class="absolute bottom-40 left-20 w-80 h-48 border-4 border-orange-500/30 bg-surface-container/40 p-4 pointer-events-auto">
+<div class="pixel-font text-orange-500 mb-4">孵化区 (Hatchery)</div>
+<div class="flex gap-4">
+<div class="w-16 h-16 bg-surface-container-highest bevel-box flex items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 dither-pattern opacity-10"></div>
+<span class="material-symbols-outlined text-orange-500" data-icon="egg">egg</span>
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] px-1 pixel-font opacity-0 group-hover:opacity-100 transition-opacity">Thinking</div>
+</div>
+<div class="w-16 h-16 bg-surface-container-highest bevel-box flex items-center justify-center relative">
+<span class="material-symbols-outlined text-orange-500" data-icon="lightbulb">lightbulb</span>
+</div>
+<div class="w-16 h-16 bg-surface-container-highest bevel-box flex items-center justify-center opacity-50">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="add">add</span>
+</div>
+</div>
+<div class="mt-4 bg-surface-container-lowest h-2 border border-[#333537]">
+<div class="h-full bg-orange-500 w-3/4"></div>
+</div>
+</div>
+<!-- Forge Units (Center) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-64 pointer-events-auto">
+<div class="grid grid-cols-2 gap-8">
+<!-- Forge Unit 1 -->
+<div class="bg-surface-container bevel-box p-3 border-orange-500/50">
+<div class="pixel-font text-xs text-on-surface-variant mb-2">FORGE_01</div>
+<div class="h-24 bg-surface-container-highest flex items-center justify-center relative">
+<span class="material-symbols-outlined text-orange-500 text-4xl animate-bounce" data-icon="fireplace">fireplace</span>
+<div class="absolute bottom-2 right-2 bg-orange-500 text-black text-[8px] px-1 pixel-font">锻造中</div>
+</div>
+</div>
+<!-- Forge Unit 2 -->
+<div class="bg-surface-container bevel-box p-3 border-cyan-500/50">
+<div class="pixel-font text-xs text-on-surface-variant mb-2">FORGE_02</div>
+<div class="h-24 bg-surface-container-highest flex items-center justify-center relative">
+<span class="material-symbols-outlined text-cyan-400 text-4xl" data-icon="ac_unit">ac_unit</span>
+<div class="absolute bottom-2 right-2 bg-cyan-400 text-black text-[8px] px-1 pixel-font">Cooling</div>
+</div>
+</div>
+</div>
+<!-- Conveyor Belt -->
+<div class="mt-8 h-10 w-full bg-surface-container-highest relative border-y-2 border-[#333537] overflow-hidden">
+<div class="absolute inset-0 flex items-center gap-12 animate-[marquee_10s_linear_infinite]">
+<span class="material-symbols-outlined text-orange-500" data-icon="deployed_code">deployed_code</span>
+<span class="material-symbols-outlined text-cyan-400" data-icon="deployed_code">deployed_code</span>
+<span class="material-symbols-outlined text-orange-500" data-icon="deployed_code">deployed_code</span>
+<span class="material-symbols-outlined text-cyan-400" data-icon="deployed_code">deployed_code</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- HUD Overlays (Bento-style layout) -->
+<div class="absolute bottom-12 left-6 md:left-72 right-6 grid grid-cols-1 md:grid-cols-3 gap-4 pointer-events-none">
+<!-- Thermal Venting -->
+<div class="bg-surface-container/90 bevel-box p-4 pointer-events-auto backdrop-blur-md">
+<div class="flex justify-between items-start mb-2">
+<span class="pixel-font text-orange-500">散热模块 (Thermal Venting)</span>
+<span class="material-symbols-outlined text-orange-500" data-icon="heat_pump">heat_pump</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-[10px] text-on-surface-variant font-headline uppercase">
+<span>Core Temp</span>
+<span class="text-orange-400">84°C</span>
+</div>
+<div class="h-4 bg-surface-container-lowest flex gap-1 p-0.5">
+<div class="h-full w-4 bg-orange-500"></div>
+<div class="h-full w-4 bg-orange-500"></div>
+<div class="h-full w-4 bg-orange-500"></div>
+<div class="h-full w-4 bg-orange-500"></div>
+<div class="h-full w-4 bg-orange-500/30"></div>
+<div class="h-full w-4 bg-orange-500/30"></div>
+</div>
+</div>
+</div>
+<!-- Data Flow -->
+<div class="bg-surface-container/90 bevel-box p-4 pointer-events-auto backdrop-blur-md">
+<div class="flex justify-between items-start mb-2">
+<span class="pixel-font text-cyan-400">数据流 (Data Flow)</span>
+<span class="material-symbols-outlined text-cyan-400" data-icon="dns">dns</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-[10px] text-on-surface-variant font-headline uppercase">
+<span>Transmission Rate</span>
+<span class="text-cyan-400">1.2 GB/S</span>
+</div>
+<div class="h-4 bg-surface-container-lowest relative overflow-hidden">
+<div class="absolute inset-0 bg-cyan-400/20"></div>
+<div class="h-full bg-cyan-400 w-2/3 relative">
+<div class="absolute inset-0 dither-pattern opacity-40"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Workers Status -->
+<div class="bg-surface-container/90 bevel-box p-4 pointer-events-auto backdrop-blur-md">
+<div class="pixel-font text-on-surface mb-2">操作员状态</div>
+<div class="flex gap-2">
+<div class="flex-1 flex flex-col items-center p-2 bg-surface-container-highest">
+<span class="pixel-font text-xs text-cyan-400">Active</span>
+<span class="text-xl font-bold">12</span>
+</div>
+<div class="flex-1 flex flex-col items-center p-2 bg-surface-container-highest">
+<span class="pixel-font text-xs text-orange-400">Idle</span>
+<span class="text-xl font-bold">04</span>
+</div>
+<div class="flex-1 flex flex-col items-center p-2 bg-surface-container-highest">
+<span class="pixel-font text-xs text-red-400">Error</span>
+<span class="text-xl font-bold">00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- FAB: New Concept -->
+<button class="fixed bottom-24 right-8 z-50 p-4 bg-orange-500 text-black flex items-center gap-3 border-4 border-black shadow-[4px_4px_0px_rgba(255,140,0,0.3)] active:translate-x-1 active:translate-y-1 transition-all group">
+<span class="material-symbols-outlined font-bold" data-icon="add">add</span>
+<span class="pixel-font text-lg">新概念 (New Concept)</span>
+</button>
+</main>
+<!-- BottomNavBar Shell -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex items-center px-4 h-10 bg-[#0c0e10] border-t-4 border-[#333537] shadow-[0_-4px_0px_rgba(0,0,0,0.5)] overflow-hidden">
+<div class="text-cyan-400 flex items-center gap-2 px-4 animate-pulse-steps">
+<span class="material-symbols-outlined text-sm" data-icon="rss_feed">rss_feed</span>
+<span class="pixel-font text-xs uppercase">苔藓广播 (Moss Broadcasts): 核心区域温度正常，世界树能量处于峰值...</span>
+</div>
+<div class="ml-auto flex items-center gap-4 text-[#ddc1ae] opacity-50 px-4">
+<span class="pixel-font text-[10px]">V 2.0.4-STABLE</span>
+</div>
+</footer>
+<!-- CSS Marquee Animation -->
+<style>
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        @keyframes pulse-steps {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .animate-pulse-steps {
+            animation: pulse-steps 2s steps(4) infinite;
+        }
+    </style>
+</body></html>

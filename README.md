@@ -50,10 +50,10 @@ npm install
 ```
 
 ### 3. 配置 API Key
-项目使用 Google Gemini API，你需要：
-1. 访问 [Google AI Studio](https://aistudio.google.com/apikey)
-2. 创建 API Key
-3. 首次使用时在界面中配置（或创建 `.env` 文件）
+项目使用图像模型 API，你需要：
+1. 在你的模型平台创建 API Key
+2. 复制 API Key
+3. 首次使用时在应用界面中配置
 
 ### 4. 启动开发服务器
 ```bash
@@ -70,23 +70,31 @@ npm run preview
 
 ```
 CoverShift/
-├── App.tsx              # 主应用组件
 ├── components/          # React 组件
 │   ├── ApiKeyModal.tsx  # API Key 配置弹窗
-│   ├── Footer.tsx       # 页脚
 │   ├── HistoryPanel.tsx # 历史记录面板
+│   ├── MagazineCover.tsx# 封面展示组件
 │   └── ...
-├── services/            # API 服务
-│   └── geminiService.ts # Gemini API 封装
+├── hooks/
+│   └── usePlayerProgress.ts  # 玩家进度与成就状态
+├── services/
+│   ├── imageModelService.ts  # 图像模型 API 调用与重试
+│   ├── generationService.ts  # 生成任务编排与并发执行
+│   └── promptBuilder.ts      # 统一 Prompt 构建
 ├── lib/                 # 工具函数
-│   ├── faceUtils.ts     # 人脸工具
-│   └── albumUtils.ts    # 相册生成
+│   ├── albumUtils.ts    # 相册生成
+│   ├── historyUtils.ts  # 历史记录存取
+│   └── utils.ts         # 通用工具
 ├── src/
 │   └── config/          # 配置文件
 │       ├── eras.ts      # 年代配置
 │       ├── magazines.ts # 杂志风格
-│       └── creativeStyles.ts # 创意风格
-└── public/             # 静态资源
+│       ├── creativeStyles.ts # 创意风格
+│       ├── randomEvents.ts   # 随机事件系统
+│       └── achievements.ts   # 成就系统
+├── src-tauri/          # Tauri 原生壳层
+├── App.tsx             # 主应用组件
+└── index.tsx           # 入口文件
 ```
 
 ## 🛠 技术栈
@@ -98,7 +106,7 @@ CoverShift/
 | Vite | 构建工具 |
 | TailwindCSS | 样式框架 |
 | Framer Motion | 动画效果 |
-| Google Gemini | AI 图像生成 |
+| 图像模型 API | AI 图像生成 |
 
 ## 📝 版本历史
 

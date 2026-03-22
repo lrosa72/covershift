@@ -41,11 +41,11 @@ export async function createAlbumPage(imageData: Record<string, string>): Promis
     ctx.textAlign = 'center';
 
     ctx.font = `bold 100px 'Caveat', cursive`;
-    ctx.fillText('Generated with Past Forward', canvasWidth / 2, 150);
+    ctx.fillText('Generated with CoverShift', canvasWidth / 2, 150);
 
     ctx.font = `50px 'Roboto', sans-serif`;
     ctx.fillStyle = '#555';
-    ctx.fillText('on Google AI Studio', canvasWidth / 2, 220);
+    ctx.fillText('by CoverShift Studio', canvasWidth / 2, 220);
 
     // 3. Load all the polaroid images concurrently
     const decades = Object.keys(imageData);

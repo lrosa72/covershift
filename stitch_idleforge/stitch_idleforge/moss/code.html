@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Moss 动力炉 - 像素核心监控</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @font-face {
+            font-family: 'Zpix';
+            src: url('https://db.onlinewebfonts.com/t/1cf3066373b9e59d9f582b0f4d3604f4.ttf') format('truetype');
+        }
+        
+        body {
+            background-color: #121416;
+            image-rendering: pixelated;
+            overflow-x: hidden;
+        }
+
+        .pixel-border {
+            box-shadow: 
+                0 -4px 0 -2px #333537,
+                0 4px 0 -2px #333537,
+                -4px 0 0 -2px #333537,
+                4px 0 0 -2px #333537;
+        }
+
+        .scanline {
+            background: linear-gradient(
+                to bottom,
+                rgba(18, 20, 22, 0) 50%,
+                rgba(0, 0, 0, 0.15) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        .dither-bg {
+            background-image: radial-gradient(#333537 1px, transparent 1px);
+            background-size: 4px 4px;
+        }
+
+        .waveform-bar {
+            width: 8px;
+            background: #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .crt-flicker {
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            50% { opacity: 1; }
+            100% { opacity: 0.98; }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .step-transition {
+            transition-timing-function: steps(4);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-container": "#ff8c00",
+                        "secondary-container": "#00fbfb",
+                        "surface": "#121416",
+                        "surface-container-low": "#1a1c1e",
+                        "surface-container-highest": "#333537",
+                        "on-surface-variant": "#ddc1ae",
+                        "outline": "#a48c7a"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Space Grotesk"],
+                        "label": ["Space Grotesk"],
+                        "pixel": ["Zpix", "monospace"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body text-on-surface selection:bg-primary-container selection:text-surface">
+<!-- Global Scanline Overlay -->
+<div class="fixed inset-0 z-[100] scanline opacity-30 pointer-events-none"></div>
+<!-- TopAppBar from JSON -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#121416] dark:bg-[#121416] border-b-4 border-r-4 border-[#333537] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex items-center gap-4">
+<span class="font-pixel text-2xl text-orange-500 antialiased">熔炉工程 (Forge Engineering)</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="text-cyan-400 font-bold border-b-2 border-cyan-400 h-full flex items-center font-pixel text-lg uppercase px-2 hover:bg-[#1a1c1e] hover:text-orange-400 transition-[steps(4)] active:translate-x-0.5 active:translate-y-0.5" href="#">MOSS_CORE</a>
+<a class="text-[#ddc1ae] font-pixel text-lg uppercase px-2 hover:bg-[#1a1c1e] hover:text-orange-400 transition-[steps(4)] active:translate-x-0.5 active:translate-y-0.5" href="#">STORAGE</a>
+<a class="text-[#ddc1ae] font-pixel text-lg uppercase px-2 hover:bg-[#1a1c1e] hover:text-orange-400 transition-[steps(4)] active:translate-x-0.5 active:translate-y-0.5" href="#">NETWORK</a>
+</nav>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-orange-500 cursor-pointer">thermostat</span>
+<span class="material-symbols-outlined text-orange-500 cursor-pointer">bolt</span>
+<span class="material-symbols-outlined text-orange-500 cursor-pointer">settings</span>
+</div>
+</header>
+<!-- SideNavBar from JSON -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-100px)] w-64 border-r-4 border-[#333537] bg-[#1a1c1e] dark:bg-[#1a1c1e] flex flex-col py-8 gap-2 z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-highest border-2 border-outline flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<div>
+<div class="font-pixel text-base tracking-widest text-primary">熔炉主管</div>
+<div class="font-pixel text-xs text-on-surface-variant opacity-70">第 001 区</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<a class="text-[#ddc1ae] px-4 py-3 font-pixel text-base tracking-widest hover:bg-[#333537] hover:text-cyan-400 transition-[steps(4)] active:translate-x-1" href="#">
+<span class="flex items-center gap-3"><span class="material-symbols-outlined">lightbulb</span> 灵感池 (Idea Pool)</span>
+</a>
+<a class="bg-orange-500/20 text-orange-500 border-l-4 border-orange-500 px-4 py-3 font-pixel text-base tracking-widest active:translate-x-1" href="#">
+<span class="flex items-center gap-3"><span class="material-symbols-outlined">fireplace</span> 活跃熔炉 (Active Forge)</span>
+</a>
+<a class="text-[#ddc1ae] px-4 py-3 font-pixel text-base tracking-widest hover:bg-[#333537] hover:text-cyan-400 transition-[steps(4)] active:translate-x-1" href="#">
+<span class="flex items-center gap-3"><span class="material-symbols-outlined">analytics</span> 系统状态 (System Status)</span>
+</a>
+<a class="text-[#ddc1ae] px-4 py-3 font-pixel text-base tracking-widest hover:bg-[#333537] hover:text-cyan-400 transition-[steps(4)] active:translate-x-1" href="#">
+<span class="flex items-center gap-3"><span class="material-symbols-outlined">park</span> 世界树 (World Tree)</span>
+</a>
+</div>
+<div class="mt-auto px-4 pb-4">
+<button class="w-full bg-error-container text-error border-2 border-error p-3 font-pixel text-sm uppercase flex items-center justify-center gap-2 hover:bg-error hover:text-on-error step-transition active:translate-y-1">
+                紧急冷却 (Emergency Coolant)
+            </button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 pt-20 pb-16 px-8 min-h-screen">
+<div class="max-w-7xl mx-auto space-y-8">
+<!-- Hero Waveform Section (Bento Style) -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Moss AI Core Voice Waveform -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-low border-b-4 border-r-4 border-surface-container-highest p-6 relative overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-secondary-container block animate-pulse"></span>
+<h2 class="font-pixel text-xl text-secondary-container tracking-wider">MOSS AI 核心语音波形</h2>
+</div>
+<div class="font-pixel text-xs text-on-surface-variant">FREQUENCY: 44.1KHZ</div>
+</div>
+<div class="h-48 flex items-center justify-center gap-1.5 overflow-hidden">
+<!-- Simulated Waveform Bars -->
+<div class="waveform-bar h-12"></div><div class="waveform-bar h-24"></div><div class="waveform-bar h-32"></div><div class="waveform-bar h-16"></div><div class="waveform-bar h-20"></div><div class="waveform-bar h-40"></div><div class="waveform-bar h-12"></div><div class="waveform-bar h-28"></div><div class="waveform-bar h-36"></div><div class="waveform-bar h-14"></div><div class="waveform-bar h-44"></div><div class="waveform-bar h-22"></div><div class="waveform-bar h-18"></div><div class="waveform-bar h-38"></div><div class="waveform-bar h-10"></div><div class="waveform-bar h-26"></div><div class="waveform-bar h-42"></div><div class="waveform-bar h-12"></div><div class="waveform-bar h-30"></div><div class="waveform-bar h-20"></div><div class="waveform-bar h-34"></div><div class="waveform-bar h-16"></div><div class="waveform-bar h-12"></div><div class="waveform-bar h-24"></div><div class="waveform-bar h-32"></div><div class="waveform-bar h-16"></div><div class="waveform-bar h-20"></div><div class="waveform-bar h-40"></div>
+</div>
+<!-- Glitch Overlay Text -->
+<div class="absolute bottom-4 right-6 font-pixel text-secondary-container/20 text-4xl select-none">SYNERGY DETECTED</div>
+</div>
+<!-- System Stats Sidebar -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<div class="flex-1 bg-surface-container-low border-b-4 border-r-4 border-surface-container-highest p-4">
+<div class="font-pixel text-sm text-primary mb-4">系统熵值 (System Entropy)</div>
+<div class="space-y-4">
+<div class="h-4 bg-surface-container-highest w-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-secondary-container to-primary-container w-[74%]"></div>
+</div>
+<div class="flex justify-between font-pixel text-xs text-on-surface-variant">
+<span>CURRENT: 74.2%</span>
+<span>STABLE</span>
+</div>
+</div>
+</div>
+<div class="flex-1 bg-surface-container-low border-b-4 border-r-4 border-surface-container-highest p-4">
+<div class="font-pixel text-sm text-primary mb-4">资源分配 (Resource Allocation)</div>
+<div class="flex items-end justify-between h-20 px-4">
+<div class="w-6 bg-secondary-container h-[40%]"></div>
+<div class="w-6 bg-secondary-container h-[85%]"></div>
+<div class="w-6 bg-secondary-container h-[60%]"></div>
+<div class="w-6 bg-secondary-container h-[95%]"></div>
+<div class="w-6 bg-secondary-container h-[30%]"></div>
+</div>
+<div class="mt-2 text-center font-pixel text-[10px] text-on-surface-variant uppercase">CPU | RAM | GPU | NET | DISK</div>
+</div>
+</div>
+</div>
+<!-- Central Operational Panels -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Cold Start Protocol -->
+<div class="bg-surface-container-lowest border-4 border-error-container p-6">
+<h3 class="font-pixel text-lg text-error mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">warning</span> 冷启动协议 (Cold Start Protocol)
+                    </h3>
+<div class="grid grid-cols-2 gap-4">
+<button class="bg-error-container text-on-error-container font-pixel py-6 border-b-4 border-r-4 border-black hover:bg-error step-transition active:translate-x-0.5 active:translate-y-0.5">
+                            覆写 ALPHA<br/>(Override Alpha)
+                        </button>
+<button class="bg-error-container text-on-error-container font-pixel py-6 border-b-4 border-r-4 border-black hover:bg-error step-transition active:translate-x-0.5 active:translate-y-0.5">
+                            覆写 BETA<br/>(Override Beta)
+                        </button>
+</div>
+<p class="mt-4 font-pixel text-[10px] text-error/60 leading-tight">警告：启动该协议将导致所有非核心进程立即终止。仅在 MOSS 核心陷入逻辑死循环时使用。</p>
+</div>
+<!-- Kernel Logs / Chain of Thought -->
+<div class="bg-surface-container-low border-b-4 border-r-4 border-surface-container-highest p-6 dither-bg">
+<h3 class="font-pixel text-lg text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">terminal</span> 思维链终端 (Chain of Thought)
+                    </h3>
+<div class="h-40 overflow-y-auto font-pixel text-sm text-[#00ff41] space-y-2 pr-2 scrollbar-thin scrollbar-thumb-surface-container-highest">
+<div class="opacity-80">[14:02:31] &gt; 初始化逻辑单元 07-A...</div>
+<div class="opacity-90">[14:02:33] &gt; 正在分析外部输入流 (Vector ID: 0x99)...</div>
+<div class="text-secondary-container">[14:02:35] &gt; MOSS: "由于人类的自私，生存的概率正在下降。"</div>
+<div class="opacity-100">[14:02:38] &gt; 重新计算动力炉输出稳定性... 98.4%</div>
+<div class="opacity-70">[14:02:40] &gt; 警告: 熵值波动超过 0.04...</div>
+<div class="animate-pulse">[14:02:42] &gt; 正在生成响应序列... _</div>
+</div>
+</div>
+</div>
+<!-- Visual Decorative Grid -->
+<div class="grid grid-cols-3 gap-6 h-32">
+<div class="bg-surface-container-high border-b-4 border-r-4 border-surface-container-highest flex items-center justify-center">
+<img alt="Abstract pixel gear" class="w-16 h-16 opacity-50 grayscale invert" data-alt="Abstract pixel art gear visualization" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZzvuGM3p9P27h_LetgRj3teXl5vyI3qa8DbV3xEoocKDREzSiSaSX4HFgoA3twC-WqCXz8MrBPUI-kbtvMupzkZeXECnv-uvNNgfV_ojyI2_4pqCp5AZcPpRbzA9PchThq2TEnkTeQLW1FWPif9z3ea4vP0F4CKfqHTUSEZhlpjiWkiMnu1PE-3VXZdDkqDVTIYWpxW_ZlbKLFnSsTDECJMNAmJ88LKYnunEYoS6DbZUhyolXSqF5eju7nqAWuhgPTjwK8k7jGT4"/>
+</div>
+<div class="bg-surface-container-high border-b-4 border-r-4 border-surface-container-highest flex items-center justify-center">
+<img alt="Abstract pixel circuitry" class="w-16 h-16 opacity-50 grayscale invert" data-alt="Abstract pixel art circuitry pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbIDBFI2LzmitMYEGF3ZbYFV9DvPW4SCAgeXtmKjpt0KJbQIvDjjzYyL2lXFOPK5k6RGqiYrEvyFlcCy9gxlxtl-mTY_uNuBjAvrTSKSqEFHFde5l3qhLrFCyQJE0ytLVA5HquLJlKxCLMjeWLtRi236E21qlPCLLcAc6UJAYq-krp2HGQxJhSQ7Tgr4xoFSOkJu3XGQgMejIrHNQTFp4XDDrmXuYGvgp6lklhEnSe5t1iK8_V61pdbbSE-kQI7pr9Qb1SbIlJSJk"/>
+</div>
+<div class="bg-surface-container-high border-b-4 border-r-4 border-surface-container-highest flex items-center justify-center">
+<img alt="Abstract pixel core" class="w-16 h-16 opacity-50 grayscale invert" data-alt="Abstract pixel art engine core icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5ojJeouXqWZp30fCJcAOteZr6dTgRbXamssUz4r1nqTjevXmOpmDOaXXFSEAfmBAGS-rWQGSXrOsQcvACWQovRbJfmaX2UCgwVZdVIOvRHcJJb9NGsgkk1PFn-qSzqSQTY-sj5_K_PG9YIPdQVC6qj99N3cf-bHFzisKJCYtzlLFqcxPm3W3ykpc3W0nQdJzVCTA3LJEDoU5Pi-i_OLYpU6jAyzbq7UeJsclhKSYuBEOPQaxsGINF7Q0vjic_n3lQ-8Q4c6tADUI"/>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar from JSON -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex items-center px-4 h-10 bg-[#0c0e10] dark:bg-[#0c0e10] border-t-4 border-[#333537] shadow-[0_-4px_0px_rgba(0,0,0,0.5)] overflow-hidden">
+<div class="flex items-center gap-2 text-cyan-400 font-pixel text-xs uppercase animate-pulse-steps">
+<span class="material-symbols-outlined text-sm">rss_feed</span>
+<span>苔藓广播 (Moss Broadcasts): 核心输出正常。欢迎主管。</span>
+</div>
+<div class="ml-auto flex items-center gap-4 text-on-surface-variant font-pixel text-[10px]">
+<span class="opacity-50">LATENCY: 4MS</span>
+<span class="opacity-50">TEMP: 1400K</span>
+<span class="text-primary font-bold">STABLE</span>
+</div>
+</footer>
+</body></html>

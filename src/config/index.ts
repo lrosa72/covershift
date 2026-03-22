@@ -11,6 +11,9 @@ export * from './magazines';
 export * from './eras';
 export * from './creativeStyles';
 export * from './presets';
+export * from './narratives';
+export * from './randomEvents';
+export * from './achievements';
 
 // 统一的生成配置接口
 export interface GenerationConfig {

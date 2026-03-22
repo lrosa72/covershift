@@ -8,7 +8,7 @@ interface ApiKeyModalProps {
     currentApiKey: string;
 }
 
-const STORAGE_KEY = 'BAZAAR_GEMINI_API_KEY';
+const STORAGE_KEY = 'COVERSHIFT_IMAGE_API_KEY';
 
 export function getStoredApiKey(): string {
     return localStorage.getItem(STORAGE_KEY) || '';
@@ -89,7 +89,7 @@ export default function ApiKeyModal({ isOpen, onClose, onSave, currentApiKey }: 
                                 </div>
                                 <div>
                                     <h2 className="text-2xl font-playfair font-bold text-white">配置 API Key</h2>
-                                    <p className="text-neutral-400 text-sm">需要 Google Gemini API Key 才能生成图片</p>
+                                    <p className="text-neutral-400 text-sm">需要图像模型 API Key 才能生成图片</p>
                                 </div>
                             </div>
 
@@ -97,7 +97,7 @@ export default function ApiKeyModal({ isOpen, onClose, onSave, currentApiKey }: 
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-sm font-medium text-neutral-300 mb-2">
-                                        Gemini API Key
+                                        图像模型 API Key
                                     </label>
                                     <div className="relative">
                                         <input
@@ -141,10 +141,10 @@ export default function ApiKeyModal({ isOpen, onClose, onSave, currentApiKey }: 
                                         如何获取 API Key
                                     </h3>
                                     <ol className="text-neutral-400 text-xs space-y-1 list-decimal list-inside">
-                                        <li>访问 <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 underline">Google AI Studio</a></li>
-                                        <li>登录你的 Google 账号</li>
-                                        <li>点击 "Create API Key" 生成密钥</li>
+                                        <li>在你使用的图像模型平台创建 API Key</li>
                                         <li>复制生成的密钥并粘贴到上方</li>
+                                        <li>保存后返回主界面开始生成</li>
+                                        <li>若你使用兼容接口，可在环境变量中配置 API Endpoint / Model</li>
                                     </ol>
                                 </div>
 

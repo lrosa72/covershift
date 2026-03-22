@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-fashion-black text-fashion-cream font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color-scheme: dark;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(212, 175, 55, 0.7);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* 时尚杂志标题 - 大而优雅 */
+  .fashion-title {
+    @apply font-display font-bold tracking-tightest;
+  }
+
+  /* 时尚副标题 - 紧凑有力量 */
+  .fashion-subtitle {
+    @apply font-sans font-semibold tracking-wide uppercase;
+  }
+
+  /* 金色文字渐变 */
+  .gold-text {
+    @apply bg-gold-gradient bg-clip-text text-transparent;
+  }
+
+  /* 金色边框 */
+  .gold-border {
+    @apply border border-fashion-gold/40;
+  }
+
+  /* 时尚卡片 - 干净留白 */
+  .fashion-card {
+    @apply bg-fashion-charcoal border border-white/10;
+  }
+
+  /* 时尚按钮 - 金色为主 */
+  .fashion-btn-primary {
+    @apply px-8 py-3 bg-fashion-gold text-fashion-black font-semibold tracking-wide uppercase text-sm;
+    @apply hover:bg-fashion-goldLight transition-all duration-300;
+  }
+
+  .fashion-btn-secondary {
+    @apply px-8 py-3 border border-fashion-gold/50 text-fashion-gold font-semibold tracking-wide uppercase text-sm;
+    @apply hover:bg-fashion-gold/10 hover:border-fashion-gold transition-all duration-300;
+  }
+
+  /* 时尚输入框 */
+  .fashion-input {
+    @apply w-full px-4 py-3 bg-fashion-black border border-white/20;
+    @apply text-fashion-cream placeholder-white/40;
+    @apply focus:outline-none focus:border-fashion-gold/60 transition-colors;
+  }
+
+  /* 细金线分隔 */
+  .fashion-divider {
+    @apply h-px bg-gradient-to-r from-transparent via-fashion-gold/40 to-transparent;
+  }
+
+  /* 双横线 - 杂志风格 */
+  .fashion-rule-double {
+    @apply border-t-2 border-fashion-gold/30 relative;
+  }
+
+  .fashion-rule-double::after {
+    content: '';
+    @apply absolute top-1 left-0 right-0 border-t border-fashion-gold/20;
+  }
+
+  /* 赛博霓虹渐变文字 */
+  .warp-text {
+    background: linear-gradient(135deg, #b026ff 0%, #00d4ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* 发光文本 */
+  .text-glow {
+    text-shadow: 0 0 12px rgba(176, 38, 255, 0.35);
+  }
+
+  /* 霓虹光晕 */
+  .box-glow {
+    box-shadow: 0 0 20px rgba(176, 38, 255, 0.4), 0 0 40px rgba(0, 212, 255, 0.2);
+  }
+
+  /* 80s 扫描线 */
+  .scanlines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    opacity: 0.35;
+  }
+
+  /* 20s 复古泛黄 */
+  .vintage-sepia {
+    filter: sepia(0.45) contrast(1.05) saturate(0.8);
+  }
+}
+
+@layer utilities {
+  /* 大留白 */
+  .spacing-fashion {
+    @apply py-16 px-8 md:px-16;
+  }
+
+  /* 悬停微光效果 */
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    @apply shadow-gold;
+  }
+
+  /* 隐藏滚动条 */
+  .hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 印刷质感文字 */
+  .print-text {
+    text-rendering: geometricPrecision;
+  }
+
+  /* 优雅的图片悬停 */
+  .img-hover {
+    @apply transition-all duration-700;
+  }
+
+  .img-hover:hover {
+    @apply scale-[1.02];
+  }
+
+  /* HIG: 可交互元素最小命中面积 44x44 */
+  .hit-target {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -2,10 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.0] - 2026-03-20
+## [0.1.0] - 2026-03-20
 
 ### Added
-- 支持多选 20 种创意风格
+- 支持 19 种创意选项（18 种创意风格 + 原时代风格）
 - 支持多选 9 种杂志
 - 一次性生成所有组合（风格 × 杂志 × 年代）
 - 保持重新生成功能正常

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>熔炉工程 - 世界树 (World Tree)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @font-face {
+            font-family: 'Zpix';
+            src: url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@master/dist/zpix.woff2') format('woff2');
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #121416;
+            color: #e2e2e5;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .pixel-font {
+            font-family: 'Zpix', monospace;
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .dither-pattern {
+            background-image: radial-gradient(#333537 1px, transparent 1px);
+            background-size: 4px 4px;
+        }
+
+        .bevel-pressed {
+            transform: translate(2px, 2px);
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .node-pulse {
+            box-shadow: 0 0 0 0 rgba(255, 140, 0, 0.4);
+            animation: pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+        }
+
+        @keyframes pulse {
+            to { box-shadow: 0 0 0 12px rgba(255, 140, 0, 0); }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-surface": "#e2e2e5",
+                        "on-tertiary": "#3a3000",
+                        "on-background": "#e2e2e5",
+                        "on-tertiary-container": "#4b3e00",
+                        "secondary-container": "#00fbfb",
+                        "on-surface-variant": "#ddc1ae",
+                        "on-secondary": "#003737",
+                        "primary-fixed-dim": "#ffb77d",
+                        "outline-variant": "#564334",
+                        "surface-container-lowest": "#0c0e10",
+                        "surface-container": "#1e2022",
+                        "tertiary-fixed-dim": "#e9c400",
+                        "tertiary-fixed": "#ffe16d",
+                        "on-secondary-container": "#007070",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#00dddd",
+                        "secondary": "#ffffff",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#37393b",
+                        "error": "#ffb4ab",
+                        "on-surface": "#e2e2e5",
+                        "surface-dim": "#121416",
+                        "on-tertiary-fixed-variant": "#544600",
+                        "secondary-fixed": "#00fbfb",
+                        "tertiary": "#e9c400",
+                        "surface-container-high": "#282a2c",
+                        "surface-tint": "#ffb77d",
+                        "outline": "#a48c7a",
+                        "surface-variant": "#333537",
+                        "on-primary-fixed": "#2f1500",
+                        "on-primary": "#4d2600",
+                        "primary": "#ffb77d",
+                        "inverse-on-surface": "#2f3133",
+                        "surface-container-highest": "#333537",
+                        "background": "#121416",
+                        "surface-container-low": "#1a1c1e",
+                        "primary-fixed": "#ffdcc3",
+                        "on-primary-container": "#623200",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "primary-container": "#ff8c00",
+                        "on-secondary-fixed": "#002020",
+                        "inverse-primary": "#904d00",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#c7a800",
+                        "on-primary-fixed-variant": "#6e3900",
+                        "surface": "#121416",
+                        "on-tertiary-fixed": "#221b00"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Space Grotesk"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "0px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface select-none">
+<div class="scanlines"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#121416] border-b-4 border-r-4 border-[#333537] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex items-center gap-4">
+<span class="pixel-font text-2xl text-orange-500 antialiased">熔炉工程 (Forge Engineering)</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-[#ddc1ae] font-['Space_Grotesk'] tracking-tighter">
+<button class="hover:bg-[#1a1c1e] hover:text-orange-400 transition-[steps(4)] px-2 py-1 active:translate-x-0.5 active:translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="thermostat">thermostat</span>
+</button>
+<button class="hover:bg-[#1a1c1e] hover:text-orange-400 transition-[steps(4)] px-2 py-1 active:translate-x-0.5 active:translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</button>
+<button class="hover:bg-[#1a1c1e] hover:text-orange-400 transition-[steps(4)] px-2 py-1 active:translate-x-0.5 active:translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-16 h-[calc(100vh-100px)] w-64 bg-[#1a1c1e] border-r-4 border-[#333537] flex flex-col py-8 gap-2 z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-highest border-2 border-outline flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="person">person</span>
+</div>
+<div>
+<div class="pixel-font text-base text-cyan-400">熔炉主管</div>
+<div class="pixel-font text-xs text-on-surface-variant opacity-70">第 001 区</div>
+</div>
+</div>
+</div>
+<a class="pixel-font text-base tracking-widest text-[#ddc1ae] px-4 py-3 hover:bg-[#333537] hover:text-cyan-400 transition-[steps(4)] active:translate-x-1 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span>灵感池 (Idea Pool)</span>
+</a>
+<a class="pixel-font text-base tracking-widest text-[#ddc1ae] px-4 py-3 hover:bg-[#333537] hover:text-cyan-400 transition-[steps(4)] active:translate-x-1 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="fireplace">fireplace</span>
+<span>活跃熔炉 (Active Forge)</span>
+</a>
+<a class="pixel-font text-base tracking-widest text-[#ddc1ae] px-4 py-3 hover:bg-[#333537] hover:text-cyan-400 transition-[steps(4)] active:translate-x-1 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>系统状态 (System Status)</span>
+</a>
+<a class="pixel-font text-base tracking-widest bg-orange-500/20 text-orange-500 border-l-4 border-orange-500 px-4 py-3 active:translate-x-1 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="park">park</span>
+<span>世界树 (World Tree)</span>
+</a>
+<div class="mt-auto px-4">
+<button class="w-full bg-error-container text-on-error-container pixel-font py-3 border-b-4 border-black active:translate-y-1 active:border-b-0 transition-all text-xs uppercase">
+                紧急冷却 (Emergency Coolant)
+            </button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 p-8 min-h-screen pb-24">
+<div class="grid grid-cols-12 gap-8">
+<!-- World Tree Visualization -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-low border-4 border-surface-container-highest relative overflow-hidden h-[600px]">
+<div class="absolute inset-0 dither-pattern opacity-20"></div>
+<!-- Pixel Art Tree Placeholder -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-[400px] h-[500px] opacity-40">
+<img alt="Pixel art silhouette of a massive industrial cybernetic tree" class="w-full h-full object-contain grayscale sepia" data-alt="Cybernetic industrial pixel art tree silhouette" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIbOam80KXfm_cWu39k6IqqtwBAKo-Cl_M3uaKWONAsCnlIAL1kLgh-LQpnhQ-v5y2SP1wI8ZDTfd-YYBBpIsBwk9nYECk3OpPSxiYNBzzzAGO21tPLBt_woZb2SyhOgzoW5k5aGtofHVwP894QIn32vRB0kAvXJNLvZBG-joeXufSeDG4WDdpLoSST1zhpMTOIIidaw2vXjCVCf6I0kzDaRH2B0C6Bk0KeSyapCL1E0harxxD88RVzfdKB79pu6uUHKnzhx86O_8"/>
+</div>
+</div>
+<!-- Tree Nodes (Fruit) -->
+<!-- Root/Lower Nodes -->
+<button class="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-8 h-8 bg-orange-500 border-4 border-black node-pulse group">
+<span class="absolute -top-10 left-1/2 -translate-x-1/2 bg-surface-container-highest px-2 py-1 pixel-font text-[10px] hidden group-hover:block whitespace-nowrap">基础架构.v1</span>
+</button>
+<!-- Mid Branch Nodes -->
+<button class="absolute top-1/2 left-1/3 w-6 h-6 bg-secondary-container border-2 border-black group">
+<span class="absolute -top-10 left-1/2 -translate-x-1/2 bg-surface-container-highest px-2 py-1 pixel-font text-[10px] hidden group-hover:block whitespace-nowrap">流体动力学</span>
+</button>
+<button class="absolute top-[45%] right-1/4 w-6 h-6 bg-tertiary border-2 border-black group">
+<span class="absolute -top-10 left-1/2 -translate-x-1/2 bg-surface-container-highest px-2 py-1 pixel-font text-[10px] hidden group-hover:block whitespace-nowrap">审美集成</span>
+</button>
+<!-- High Branch Nodes -->
+<button class="absolute top-1/4 left-1/2 -translate-x-1/2 w-10 h-10 bg-orange-500 border-4 border-cyan-400 node-pulse group">
+<span class="absolute -top-12 left-1/2 -translate-x-1/2 bg-surface-container-highest border-2 border-cyan-400 px-3 py-1 pixel-font text-xs hidden group-hover:block whitespace-nowrap text-cyan-400">大树之果: 最终协议</span>
+</button>
+<div class="absolute top-4 left-4">
+<h2 class="pixel-font text-xl text-cyan-400 uppercase tracking-widest">世界树演化图 (Evolution Map)</h2>
+<p class="text-xs text-on-surface-variant font-['Space_Grotesk']">Sector 001 - Project Success Nodes</p>
+</div>
+</div>
+<!-- Detail Panel -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<div class="bg-surface-container-highest p-6 border-t-4 border-l-4 border-surface-bright border-b-4 border-r-4 border-black h-full">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="bg-orange-500 text-on-primary-container pixel-font px-2 py-0.5 text-[10px]">SELECTED</span>
+<h3 class="pixel-font text-2xl mt-2">大树之果: 最终协议</h3>
+<p class="text-xs text-on-surface-variant">Project ID: FORGE-99-FINAL</p>
+</div>
+<div class="text-cyan-400">
+<span class="material-symbols-outlined text-4xl" data-icon="military_tech">military_tech</span>
+</div>
+</div>
+<div class="space-y-6">
+<!-- Stats with Segmented Bars -->
+<div class="space-y-2">
+<div class="flex justify-between text-xs pixel-font">
+<span>功效 (Efficacy)</span>
+<span class="text-orange-500">92%</span>
+</div>
+<div class="h-4 bg-surface-container-lowest flex gap-1 p-0.5">
+<div class="w-full h-full bg-orange-500"></div>
+<div class="w-full h-full bg-orange-500"></div>
+<div class="w-full h-full bg-orange-500"></div>
+<div class="w-full h-full bg-orange-500"></div>
+<div class="w-1/2 h-full bg-orange-500"></div>
+<div class="w-full h-full opacity-20 bg-orange-500"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs pixel-font">
+<span>耐用性 (Durability)</span>
+<span class="text-cyan-400">78%</span>
+</div>
+<div class="h-4 bg-surface-container-lowest flex gap-1 p-0.5">
+<div class="w-full h-full bg-cyan-400"></div>
+<div class="w-full h-full bg-cyan-400"></div>
+<div class="w-full h-full bg-cyan-400"></div>
+<div class="w-full h-full bg-cyan-400"></div>
+<div class="w-full h-full opacity-20 bg-cyan-400"></div>
+<div class="w-full h-full opacity-20 bg-cyan-400"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs pixel-font">
+<span>艺术性 (Artistry)</span>
+<span class="text-tertiary">100%</span>
+</div>
+<div class="h-4 bg-surface-container-lowest flex gap-1 p-0.5">
+<div class="w-full h-full bg-tertiary"></div>
+<div class="w-full h-full bg-tertiary"></div>
+<div class="w-full h-full bg-tertiary"></div>
+<div class="w-full h-full bg-tertiary"></div>
+<div class="w-full h-full bg-tertiary"></div>
+<div class="w-full h-full bg-tertiary"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs pixel-font">
+<span>熵 (Entropy)</span>
+<span class="text-error">12%</span>
+</div>
+<div class="h-4 bg-surface-container-lowest flex gap-1 p-0.5">
+<div class="w-1/3 h-full bg-error"></div>
+<div class="w-full h-full opacity-20 bg-error"></div>
+<div class="w-full h-full opacity-20 bg-error"></div>
+<div class="w-full h-full opacity-20 bg-error"></div>
+<div class="w-full h-full opacity-20 bg-error"></div>
+<div class="w-full h-full opacity-20 bg-error"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 border-t-2 border-outline-variant pt-4">
+<p class="text-[10px] leading-relaxed opacity-60">
+                            该成果标志着熔炉工程的巅峰。通过将高纯度硅酸盐与电离气体融合，我们成功创建了一个稳定的能量循环节点。
+                        </p>
+<button class="mt-6 w-full bg-secondary-container text-on-secondary-container pixel-font py-2 border-b-4 border-black active:translate-y-1 active:border-b-0">
+                            查看详细蓝图 (VIEW BLUEPRINT)
+                        </button>
+</div>
+</div>
+</div>
+<!-- Harvested Fruits Grid -->
+<div class="col-span-12">
+<div class="flex justify-between items-center mb-4">
+<h3 class="pixel-font text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-orange-500" data-icon="inventory_2">inventory_2</span>
+                        已收获的果实 (Harvested Fruits)
+                    </h3>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+<!-- Fruit Card 1 -->
+<div class="bg-surface-container p-4 border-2 border-surface-container-highest hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-full aspect-square bg-surface-container-lowest mb-3 flex items-center justify-center relative">
+<span class="material-symbols-outlined text-4xl text-orange-500" data-icon="precision_manufacturing">precision_manufacturing</span>
+</div>
+<div class="pixel-font text-xs truncate">初级核心组装</div>
+<div class="flex mt-2">
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star">star</span>
+</div>
+</div>
+<!-- Fruit Card 2 -->
+<div class="bg-surface-container p-4 border-2 border-surface-container-highest hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-full aspect-square bg-surface-container-lowest mb-3 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-cyan-400" data-icon="water_drop">water_drop</span>
+</div>
+<div class="pixel-font text-xs truncate">循环水系统</div>
+<div class="flex mt-2">
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<!-- Fruit Card 3 -->
+<div class="bg-surface-container p-4 border-2 border-surface-container-highest hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-full aspect-square bg-surface-container-lowest mb-3 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-tertiary" data-icon="architecture">architecture</span>
+</div>
+<div class="pixel-font text-xs truncate">美学矫正器</div>
+<div class="flex mt-2">
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<!-- Fruit Card 4 -->
+<div class="bg-surface-container p-4 border-2 border-surface-container-highest hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-full aspect-square bg-surface-container-lowest mb-3 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-error" data-icon="fire_drills">fire_extinguisher</span>
+</div>
+<div class="pixel-font text-xs truncate">抗热阻焊层</div>
+<div class="flex mt-2">
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star">star</span>
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-icon="star">star</span>
+</div>
+</div>
+<!-- New Bud Placeholder -->
+<div class="bg-surface-container-low border-2 border-dashed border-outline-variant p-4 flex flex-col items-center justify-center hover:border-cyan-400 transition-colors cursor-pointer group">
+<div class="w-12 h-12 bg-surface-container flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-2xl text-outline-variant group-hover:text-cyan-400" data-icon="add">add</span>
+</div>
+<div class="pixel-font text-[10px] mt-2 text-outline-variant group-hover:text-cyan-400">培育新芽 (New Bud)</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex items-center px-4 overflow-hidden bg-[#0c0e10] h-10 border-t-4 border-[#333537] shadow-[0_-4px_0px_rgba(0,0,0,0.5)]">
+<div class="text-cyan-400 flex items-center gap-2 px-4 animate-pulse-steps">
+<span class="material-symbols-outlined text-sm" data-icon="rss_feed">rss_feed</span>
+<span class="pixel-font text-[10px] uppercase">苔藓广播 (Moss Broadcasts): 核心熔炉状态稳定，世界树生长速度 +1.2%...</span>
+</div>
+<div class="ml-auto text-on-surface-variant opacity-50 pixel-font text-[10px] flex items-center gap-4 px-4">
+<span>Uptime: 1024:12:05</span>
+<span>Version: 0.9.4-BETA</span>
+</div>
+</footer>
+</body></html>
