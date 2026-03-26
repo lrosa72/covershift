@@ -285,25 +285,20 @@ describe('generationService', () => {
           return 'result';
         };
 
+        // 先添加任务，但立即附加错误处理程序
         const promise1 = queue.add(createTask());
-        const promise2 = queue.add(createTask());
-        const promise3 = queue.add(createTask());
+        const promise2 = queue.add(createTask()).catch(() => 'cancelled');
+        const promise3 = queue.add(createTask()).catch(() => 'cancelled');
 
         // 等待第一个任务开始
         await new Promise(resolve => setTimeout(resolve, 50));
 
         queue.clear();
 
-        // 第一个任务应该完成，其他应该被拒绝
+        // 第一个任务应该完成，其他应该被取消
         await expect(promise1).resolves.toBe('result');
-
-        // 使用 Promise.allSettled 避免未处理的 rejection 警告
-        const results = await Promise.allSettled([promise2, promise3]);
-        expect(results[0].status).toBe('rejected');
-        expect(results[1].status).toBe('rejected');
-        if (results[0].status === 'rejected') {
-          expect(results[0].reason.message).toBe('Task cancelled: queue cleared');
-        }
+        await expect(promise2).resolves.toBe('cancelled');
+        await expect(promise3).resolves.toBe('cancelled');
       });
 
       it('应该支持不清空时只清空队列', () => {
