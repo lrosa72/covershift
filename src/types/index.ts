@@ -133,3 +133,44 @@ export interface EraArchive {
   magazineId: string;
   randomEvent: RandomEvent | null;
 }
+
+// ==================== TransformOption 类型定义 ====================
+
+/**
+ * 变换选项分类
+ */
+export type TransformCategory = 'era' | 'universe' | 'role' | 'artStyle';
+
+/**
+ * 变换选项接口 - 统一的风格/时代/角色转换选项
+ */
+export interface TransformOption {
+  /** 唯一标识符 */
+  id: string;
+  /** 显示名称 */
+  name: string;
+  /** 详细描述 */
+  description: string;
+  /** 预览图片URL */
+  previewImage?: string;
+  /** Prompt修饰函数 - 接收基础prompt并返回修改后的prompt */
+  promptModifier: (basePrompt: string) => string;
+  /** 分类 */
+  category: TransformCategory;
+  /** 年代范围 [起始年份, 结束年份] - 仅 era 类型需要 */
+  eraRange?: [number, number];
+}
+
+/**
+ * 冲突规则 - 定义互斥的选项组合
+ */
+export interface ConflictRule {
+  /** 规则ID */
+  id: string;
+  /** 规则描述 */
+  description: string;
+  /** 互斥的选项ID列表 */
+  mutuallyExclusiveIds: string[];
+  /** 冲突提示消息 */
+  message: string;
+}
